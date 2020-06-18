@@ -1,0 +1,94 @@
+﻿{
+  "lat": 46.88,
+  "lon": -96.79,
+  "timezone": "America/Chicago",
+  "timezone_offset": -18000,
+  "current": {
+    "dt": 1592424656,
+    "sunrise": 1592389927,
+    "sunset": 1592447060,
+    "temp": 95.99,
+    "feels_like": 85.59,
+    "pressure": 1006,
+    "humidity": 34,
+    "dew_point": 63.1,
+    "uvi": 8.61,
+    "clouds": 1,
+    "visibility": 16093,
+    "wind_speed": 26.4,
+    "wind_deg": 170,
+    "wind_gust": 42.5,
+    "weather": [
+      {
+        "id": 800,
+        "main": "Clear",
+        "description": "clear sky",
+        "icon": "01d"
+      }
+    ]
+  },
+  "minutely": [
+    {
+      "dt": 1592424660,
+      "precipitation": 0
+    }
+  ],
+  "hourly": [
+    {
+      "dt": 1592424000,
+      "temp": 95.99,
+      "feels_like": 89.69,
+      "pressure": 1006,
+      "humidity": 34,
+      "dew_point": 63.1,
+      "clouds": 1,
+      "wind_speed": 19.1,
+      "wind_deg": 177,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ]
+    }
+  ],
+  "daily": [
+    {
+      "dt": 1592416800,
+      "sunrise": 1592389927,
+      "sunset": 1592447060,
+      "temp": {
+        "day": 95.99,
+        "min": 66.2,
+        "max": 95.99,
+        "night": 66.2,
+        "eve": 85.08,
+        "morn": 95.99
+      },
+      "feels_like": {
+        "day": 89.06,
+        "night": 63.97,
+        "eve": 83.08,
+        "morn": 89.06
+      },
+      "pressure": 1006,
+      "humidity": 34,
+      "dew_point": 63.1,
+      "wind_speed": 20.22,
+      "wind_deg": 176,
+      "weather": [
+        {
+          "id": 501,
+          "main": "Rain",
+          "description": "moderate rain",
+          "icon": "10d"
+        }
+      ],
+      "clouds": 1,
+      "rain": 11.98,
+      "uvi": 8.61
+    }
+  ]
+}

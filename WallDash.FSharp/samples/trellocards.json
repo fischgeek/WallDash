@@ -1,0 +1,58 @@
+﻿[
+  {
+    "id": "string",
+    "checkItemStates": null,
+    "closed": false,
+    "dateLastActivity": "2020-06-04T15:52:17.238Z",
+    "desc": "string",
+    "descData": null,
+    "dueReminder": null,
+    "idBoard": "string",
+    "idList": "string",
+    "idMembersVoted": [],
+    "idShort": 0,
+    "idAttachmentCover": null,
+    "idLabels": [],
+    "manualCoverAttachment": false,
+    "name": "string",
+    "pos": 0,
+    "shortLink": "string",
+    "isTemplate": false,
+    "badges": {
+      "attachmentsByType": {
+        "trello": {
+          "board": 0,
+          "card": 0
+        }
+      },
+      "location": false,
+      "votes": 0,
+      "viewingMemberVoted": false,
+      "subscribed": false,
+      "fogbugz": "string",
+      "checkItems": 0,
+      "checkItemsChecked": 0,
+      "checkItemsEarliestDue": null,
+      "comments": 0,
+      "attachments": 0,
+      "description": false,
+      "due": null,
+      "dueComplete": false
+    },
+    "dueComplete": false,
+    "due": null,
+    "idChecklists": [],
+    "idMembers": [],
+    "labels": [],
+    "shortUrl": "string",
+    "subscribed": false,
+    "url": "string",
+    "cover": {
+      "idAttachment": null,
+      "color": null,
+      "idUploadedBackground": null,
+      "size": "normal",
+      "brightness": "light"
+    }
+  }
+]

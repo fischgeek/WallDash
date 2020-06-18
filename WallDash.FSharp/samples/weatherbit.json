@@ -1,0 +1,48 @@
+﻿{
+  "data": [
+    {
+      "rh": 38,
+      "pod": "d",
+      "lon": -96.7898,
+      "pres": 976,
+      "timezone": "America\/Chicago",
+      "ob_time": "2020-06-17 19:30",
+      "country_code": "US",
+      "clouds": 0,
+      "ts": 1592422200,
+      "solar_rad": 944.1,
+      "state_code": "ND",
+      "city_name": "Fargo",
+      "wind_spd": 31.1,
+      "last_ob_time": "2020-06-17T19:30:00",
+      "wind_cdir_full": "south",
+      "wind_cdir": "S",
+      "slp": 1006.1,
+      "vis": 3.1,
+      "h_angle": 11.3,
+      "sunset": "02:24",
+      "dni": 913.63,
+      "dewpt": 65.6,
+      "snow": 0,
+      "uv": 10.0417,
+      "precip": 0,
+      "wind_dir": 180,
+      "sunrise": "10:31",
+      "ghi": 944.14,
+      "dhi": 120.01,
+      "aqi": 59,
+      "lat": 46.87719,
+      "weather": {
+        "icon": "c01d",
+        "code": "800",
+        "description": "Clear sky"
+      },
+      "datetime": "2020-06-17:19",
+      "temp": 95.99,
+      "station": "KFAR",
+      "elev_angle": 65.63,
+      "app_temp": 98.99
+    }
+  ],
+  "count": 1
+}
