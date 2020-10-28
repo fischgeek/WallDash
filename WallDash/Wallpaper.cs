@@ -26,13 +26,8 @@ namespace WallDash
             Span
         }
 
-        public static void Set(Uri uri, Style style)
+        public static string Set(string wallpaperPath, string dir, Style style)
         {
-            System.IO.Stream s = new System.Net.WebClient().OpenRead(uri.ToString());
-            System.Drawing.Image img = System.Drawing.Image.FromStream(s);
-            string tempPath = Path.Combine(Path.GetTempPath(), "wallpaper.bmp");
-            img.Save(tempPath, System.Drawing.Imaging.ImageFormat.Bmp);
-
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
             if (style == Style.Fill) {
                 key.SetValue(@"WallpaperStyle", "10");
@@ -60,7 +55,8 @@ namespace WallDash
                 key.SetValue(@"TileWallpaper", "0");
             }
 
-            SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, tempPath, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+            SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, wallpaperPath, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+            return wallpaperPath;
         }
     }
 }

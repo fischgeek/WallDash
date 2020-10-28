@@ -48,6 +48,7 @@
     <None Include="samples\weatherbit_forecast.json" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Settings.fs" />
+    <Compile Include="Actions.fs" />
     <Content Include="packages.config" />
     <Content Include="App.config" />
   </ItemGroup>
@@ -57,9 +58,6 @@
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\packages\FSharp.Data.3.3.3\lib\net45\FSharp.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="JFSharpKit">
-      <HintPath>lib\JFSharpKit.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -73,6 +71,13 @@
     <Reference Include="TrelloConnectFSharp">
       <HintPath>lib\TrelloConnectFSharp.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\JFSharp\JFSharp\JFSharp.fsproj">
+      <Name>JFSharp</Name>
+      <Project>{7b8ef634-3eb8-4bc1-bb10-c61c9ffbe162}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
