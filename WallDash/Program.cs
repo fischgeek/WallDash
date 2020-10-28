@@ -21,7 +21,7 @@ namespace WallDash
         static void Main(string[] args)
         {
             t2 = new System.Timers.Timer();
-            t2.Interval = 15000;
+            t2.Interval = 60000;
             t2.Elapsed += T2_Elapsed;
             t2.AutoReset = true;
             t2.Enabled = true;
@@ -49,7 +49,7 @@ namespace WallDash
             File.WriteAllText(wallHtml, source);
             Cleanup(source);
             var savedImage = Actions.HtmlToImage(wallHtml, 1920, 1080);
-            System.Threading.Thread.Sleep(5000);
+            //System.Threading.Thread.Sleep(5000);
             SetWallPaper(savedImage);
             Console.WriteLine("Done.");
             //Environment.Exit(1);
