@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace WallDash
 {
-    class Program
+public    class Program
     {
         private static System.Timers.Timer t2;
         private static string walldir = @"c:\dev\temp\walldash\";
@@ -18,7 +18,7 @@ namespace WallDash
         private static string wallBg = @"c:\dev\temp\walldash\wallpaper.png";
         private static string tempHtml = @"c:\dev\temp\walldash\temp.html";
 
-        static void Main(string[] args)
+       public static void Main(string[] args)
         {
             t2 = new System.Timers.Timer();
             t2.Interval = 15000;
