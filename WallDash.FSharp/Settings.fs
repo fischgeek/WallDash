@@ -1,5 +1,7 @@
 namespace WallDash.FSharp
 
+open FSharpGoogleCalendar
+open Google.Apis.Calendar.v3.Data
 open FSharp.Data
 open JFSharp
 open System
@@ -24,6 +26,7 @@ module Settings =
           IconUrl: string
           LowHigh: string }
 
+    let GoogleCalendarCredentials = @"c:\dev\config\google-calendar-credentials.json"
     let ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
     let a = System.Configuration.ConfigurationManager.AppSettings
     let private monitorDimensions = a.["MonitorDimensions"]
@@ -135,6 +138,26 @@ module Settings =
         |> (fun x -> x)
         |> String.concat ""
 
+    let GetCalendarInfo() = 
+        let calendarDiv = 
+            sprintf "<div class='calendar'>
+                        <ul class='calendar-list'>"
+                        
+        let events = GoogleCalendar.GetEventList()
+        let eventsHtml = 
+            events
+            |> function
+            | Some eventList -> 
+                eventList
+                |> Seq.map (fun event -> 
+                    sprintf "<li>%s<div class='event-time'>%s</div></li>" event.Summary (event.Start.DateTime.Value.ToString("h:mm"))
+                )
+                |> String.concat ""
+            | None -> ""
+        let calendarDivClose = "</ul></div>"
+        sprintf "%s%s%s" calendarDiv eventsHtml calendarDivClose
+        //events.Items |> Seq.iter (fun (e: Event) -> printfn "%s" e.Summary)
+
     let GetBodyHtml() : string =
         let leftContainer = sprintf "<div class='top-container'>%s</div>" GetGreeting
         let centerContainer = sprintf "<div class='top-container'>%s</div>" GetDateInfo
@@ -146,5 +169,5 @@ module Settings =
                             <div class='big-box-section-header'>Priority Items</div>
                             <div class='card-container'>%s</div>
                         </div>
-                     </div><div style='float:right'>%s</div>" (GetTrelloItems()) (DateTimePipe.StampString())
-        sprintf "%s%s%s%s" leftContainer centerContainer rightContainer bigBox
+                     </div><div id='timestamp'>%s</div>" (GetTrelloItems()) (DateTimePipe.StampString())
+        sprintf "%s%s%s%s%s" leftContainer centerContainer rightContainer bigBox (GetCalendarInfo())

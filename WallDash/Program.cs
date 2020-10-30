@@ -43,6 +43,7 @@ namespace WallDash
         private static void GetStuff()
         {
             Console.WriteLine("Fetching new data...");
+            Settings.GetCalendarInfo();
             var headHtml = File.ReadAllText(providedHeadHtml);
             var bodyHtml = Settings.GetBodyHtml();
             var source = $"<html>{headHtml}{bodyHtml}</html>";
