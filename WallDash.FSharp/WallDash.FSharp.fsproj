@@ -42,11 +42,16 @@
   </PropertyGroup>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <None Include="html\head.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="html\sample.html" />
     <None Include="samples\weatherbit.json" />
     <None Include="samples\openweather.json" />
     <None Include="samples\trellocards.json" />
     <None Include="samples\weatherbit_forecast.json" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Wallpaper.fs" />
     <Compile Include="Settings.fs" />
     <Compile Include="Actions.fs" />
     <Content Include="packages.config" />
