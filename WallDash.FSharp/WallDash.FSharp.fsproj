@@ -47,6 +47,7 @@
     <None Include="samples\trellocards.json" />
     <None Include="samples\weatherbit_forecast.json" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Wallpaper.fs" />
     <Compile Include="Settings.fs" />
     <Compile Include="Actions.fs" />
     <Content Include="packages.config" />

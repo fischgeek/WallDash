@@ -3,8 +3,17 @@ namespace WallDash.FSharp
 open JFSharp.Pipes
 open System
 open System.Diagnostics
+open System.Timers
 
 module Actions =
+    let timer = new Timer()
+
+    let TimerElapsed sender e = ()
+
+    let StartWallDash() = 
+        timer.Interval <- 60000.0
+        //timer.Elapsed <- TimerElapsed
+
 
     let getMonitorDimensions = Settings.MonitorSize
 
@@ -35,3 +44,5 @@ module Actions =
         | Some p -> whileProcExists p
         | None -> ()
         saveLocation
+
+    let SetWallPaper() = Wallpaper.Set @"C:\Users\jeremiah\Dropbox\Jeremiah\Photos\Wallpaper\2ca37eb1.jpg" None

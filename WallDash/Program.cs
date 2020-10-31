@@ -20,6 +20,7 @@ namespace WallDash
 
         static void Main(string[] args)
         {
+            WallDash.FSharp.Actions.SetWallPaper();
             t2 = new System.Timers.Timer();
             t2.Interval = 60000;
             t2.Elapsed += T2_Elapsed;
