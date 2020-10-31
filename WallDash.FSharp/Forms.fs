@@ -2,11 +2,16 @@
 open System.Windows.Forms
 
 module Forms =
-    let MakeLabel text (clickAction: 'a) = 
+    let MakeLabel text (clickAction: unit -> unit) = 
         let l = new Label()
+        l.Name <- text
         l.Text <- text
+        l.Click.Add (fun _ -> clickAction())
 
-        l
+    let MakeText text (keyPressEvent: unit -> unit) =
+        let t = new TextBox()
+        t.Name <- text
+        t.KeyPress.Add (fun x -> keyPressEvent())
 
     let rec DoBackgroundStuff() = 
         System.Threading.Thread.Sleep 1000
