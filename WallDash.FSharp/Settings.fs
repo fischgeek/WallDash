@@ -143,7 +143,7 @@ module Settings =
             sprintf "<div class='calendar'>
                         <ul class='calendar-list'>"
                         
-        let events = GoogleCalendar.GetEventList()
+        let events = GoogleCalendar.GetEventList "primary" DateTime.Now (DateTime.Now.AddDays(1.))
         let eventsHtml = 
             events
             |> function
