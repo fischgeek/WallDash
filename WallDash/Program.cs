@@ -20,15 +20,16 @@ namespace WallDash
 
         static void Main(string[] args)
         {
-            WallDash.FSharp.Actions.SetWallPaper();
-            t2 = new System.Timers.Timer();
-            t2.Interval = 60000;
-            t2.Elapsed += T2_Elapsed;
-            t2.AutoReset = true;
-            t2.Enabled = true;
-            Init();
-            GetStuff();
-            Console.ReadLine();
+            WallDash.FSharp.Actions.StartWallDash();
+            //WallDash.FSharp.Actions.SetWallPaper();
+            //t2 = new System.Timers.Timer();
+            //t2.Interval = 60000;
+            //t2.Elapsed += T2_Elapsed;
+            //t2.AutoReset = true;
+            //t2.Enabled = true;
+            //Init();
+            //GetStuff();
+            //Console.ReadLine();
         }
 
         private static void Init()

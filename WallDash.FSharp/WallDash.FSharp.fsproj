@@ -42,6 +42,10 @@
   </PropertyGroup>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <None Include="html\head.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="html\sample.html" />
     <None Include="samples\weatherbit.json" />
     <None Include="samples\openweather.json" />
     <None Include="samples\trellocards.json" />
