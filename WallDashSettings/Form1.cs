@@ -19,8 +19,6 @@ namespace WallDashSettings
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //var x = SharedFrameworkForms.InputBox.Show("Enter stuff", "A Title");
-            //SharedFSharpForms.Forms.Picker
             WallDash.FSharp.Forms.MakeForm();
         }
     }
