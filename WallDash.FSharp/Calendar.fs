@@ -43,15 +43,19 @@ module Calendar =
 
     let private formatEventListForDisplay (events: DashboardEvent list) =
         events
-        |> Seq.map (fun (event: DashboardEvent) -> 
-            let st,sep,en = 
-                event.AllDay
-                |> function
-                | true -> "All Day", "", ""
-                | false -> event.StartDateAsString, event.Separator, event.EndDateAsString
-            $"<li style='border-left:2px solid {event.Color}'>{event.Title}<div class='event-time'>{st}{sep}{en}</div></li>"
-            )
-        |> String.concat ""
+        |> function
+        | [] -> $"<li class='no-events'>No Events</li>"
+        | x ->
+            x
+            |> Seq.map (fun (event: DashboardEvent) -> 
+                let st,sep,en = 
+                    event.AllDay
+                    |> function
+                    | true -> "All Day", "", ""
+                    | false -> event.StartDateAsString, event.Separator, event.EndDateAsString
+                $"<li style='border-left:2px solid {event.Color}'>{event.Title}<div class='event-time'>{st}{sep}{en}</div></li>"
+                )
+                |> String.concat ""
     
     let private getRealDate (eventDateTime: EventDateTime) = 
         if isNull eventDateTime.Date then 
@@ -120,7 +124,7 @@ module Calendar =
     let GetCalendarInfo() =
         printf "\tGetting Calendar events..."
         let events = GetCalendarEvents() |> Seq.toList
-        let dt = DateTime.Now.Date
+        let dt = DateTime.Now
         let cleaned = events |> cleanAndFlatten
         let todaysEvents = cleaned |> collectEvents dt |> formatEventListForDisplay
         let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay

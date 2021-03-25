@@ -106,6 +106,7 @@
         ul.calendar-list {
             max-width: 400px;
             padding-left: 0;
+            margin-top: 0;
         }
 
         ul.calendar-list li {
@@ -118,6 +119,12 @@
             ul.calendar-list li .event-time {
                 float: right;
                 color: #828282;
+            }
+
+            ul.calendar-list li.no-events {
+                color: gray;
+                border-left: none;
+                padding-left: 0;
             }
         .quote {
             text-align: left !important;

@@ -61,7 +61,7 @@ module Settings =
     let private formatTemp = DecimalPipe.RoundZero >> StringPipe.ToString
 
     let private getQuote () = 
-        printf "\tGetting quote..."
+        printf "\tGetting MOTD..."
         let quotes = SettingsTypes.LoadQuotes() |> Seq.toArray
         let random = Random()
         let ranNum = random.Next(0, quotes.Length)
