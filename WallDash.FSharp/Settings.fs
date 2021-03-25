@@ -59,8 +59,32 @@ module Settings =
              |> StringPipe.ToString)
 
     let private formatTemp = DecimalPipe.RoundZero >> StringPipe.ToString
+
+    let private getQuote () = 
+        printf "\tGetting MOTD..."
+        let quotes = SettingsTypes.LoadQuotes() |> Seq.toArray
+        let random = Random()
+        let ranNum = random.Next(0, quotes.Length)
+        let quote = 
+            let q = quotes.[ranNum]
+            $"{q.Quote}" //<br />- {q.Author}"
+        let quoteFile = @"c:\dev\temp\walldash\quote.txt"
+        let quoteText = 
+            if File.Exists quoteFile then
+                let fi = FileInfo(quoteFile)
+                if fi.CreationTime.Date = DateTime.Now.Date then
+                    File.ReadAllText(quoteFile)
+                else
+                    File.WriteAllText(quoteFile, quote)
+                    quote
+            else
+                File.WriteAllText(quoteFile, quote)
+                quote
+        printfn "Done."
+        quoteText
             
-    let private formatGreeting motd =
+    let private getGreeting() =
+        let quote = getQuote()
         let now = DateTime.Now
         let words =
             if now.Hour > 7 && now.Hour < 12 then "Good Morning!"
