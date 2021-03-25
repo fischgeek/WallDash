@@ -1,34 +1,21 @@
 namespace WallDash.FSharp
 
-open FSharpGoogleCalendar
-open Google.Apis.Calendar.v3.Data
-open FSharp.Data
 open JFSharp
 open System
+open System.IO
 open TrelloConnectFSharp
 open JFSharp.Pipes
+open WallDash.FSharp.SettingsTypes
 
 module Settings =
-    type WeatherBit = JsonProvider<"samples/weatherbit.json">
-
-    type WeatherBitForecast = JsonProvider<"samples/weatherbit_forecast.json">
-
-    type OpenWeather = JsonProvider<"samples/openweather.json">
-
-    type TrelloCards = JsonProvider<"samples/trellocards.json">
-
-    type WeatherProvider =
-        | WeatherBit
-        | OpenWeather
-
-    type WeatherData =
-        { Temp: string
-          IconUrl: string
-          LowHigh: string }
-
+    let cfg = LoadConfig()
     let GoogleCalendarCredentials = @"c:\dev\config\google-calendar-credentials.json"
     let ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
     let a = System.Configuration.ConfigurationManager.AppSettings
+
+    let private calendar2 = a.["Calendar2"]
+    let private calendar3 = a.["Calendar3"]
+
     let private monitorDimensions = a.["MonitorDimensions"]
     let private trelloListId = System.Configuration.ConfigurationManager.AppSettings.["TrelloListId"]
     let private weaterhBitApi = System.Configuration.ConfigurationManager.AppSettings.["WeatherBitApi"]
@@ -73,95 +60,102 @@ module Settings =
 
     let private formatTemp = DecimalPipe.RoundZero >> StringPipe.ToString
 
-    let private GetGreeting =
+    let private getQuote () = 
+        printf "\tGetting quote..."
+        let quotes = SettingsTypes.LoadQuotes() |> Seq.toArray
+        let random = Random()
+        let ranNum = random.Next(0, quotes.Length)
+        let quote = 
+            let q = quotes.[ranNum]
+            $"{q.Quote}" //<br />- {q.Author}"
+        let quoteFile = @"c:\dev\temp\walldash\quote.txt"
+        let quoteText = 
+            if File.Exists quoteFile then
+                let fi = FileInfo(quoteFile)
+                if fi.CreationTime.Date = DateTime.Now.Date then
+                    File.ReadAllText(quoteFile)
+                else
+                    File.WriteAllText(quoteFile, quote)
+                    quote
+            else
+                File.WriteAllText(quoteFile, quote)
+                quote
+        printfn "Done."
+        quoteText
+            
+    let private getGreeting() =
+        let quote = getQuote()
         let now = DateTime.Now
-
         let words =
             if now.Hour > 7 && now.Hour < 12 then "Good Morning!"
             elif now.Hour > 12 && now.Hour < 17 then "Good Afternoon!"
             else "Good Evening!"
-        sprintf "<div class='header'>%s</div>" words
+        $"<div id='motd' class='header'>{words}</div><div class='quote'>{quote}</div>"
 
-    let private GetDateInfo = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.ToString("m")) (DateTime.Now.DayOfWeek.ToString())
+    let private getDateInfo() = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.DayOfWeek.ToString()) (DateTime.Now.ToString("MMMM d, yyyy"))
 
-    let private ShouldGetWeather() = 
+    let private shouldGetWeather() = 
         let now = DateTime.Now
         let diff = now - lastWeatherCheckTime
-        printfn "It has been %f seconds since the last weather check." diff.TotalSeconds
+        //printfn "It has been %f seconds since the last weather check." diff.TotalSeconds
         lastWeatherCheckTime <- now
-        if diff.TotalSeconds >= 300.0 then true
-        else false
+        diff.TotalSeconds >= 300.0
 
-    let private GetWeather(source: WeatherProvider): string =
-        if ShouldGetWeather() then
-            printfn "Getting Weather data from %s" (source.ToString())
-            let weatherData =
-                source
-                |> function
-                | WeatherBit ->
-                    let res = WebPipe.QuickGet weatherBitForecastCall
-                    let forecast = WeatherBitForecast.Parse(res)
-                    WebPipe.QuickGet weatherBitCurrentCall
-                    |> WeatherBit.Parse
-                    |> (fun w ->
-                    {| Temp = w.Data.[0].Temp |> formatTemp
-                       IconUrl = w.Data.[0].Weather.Icon |> weatherBitIconUrl
-                       LowHigh = formatLowHigh forecast.Data.[0].MinTemp forecast.Data.[0].MaxTemp |})
-                | OpenWeather ->
-                    WebPipe.QuickGet openWeatherCall
-                    |> OpenWeather.Parse
-                    |> (fun w ->
-                    {| Temp = w.Current.Temp |> formatTemp
-                       IconUrl = w.Current.Weather.[0].Icon |> openWeatherIconUrl
-                       LowHigh = formatLowHigh w.Daily.[0].Temp.Min w.Daily.[0].Temp.Max |})
-            let outString = 
-                sprintf
-                    "<div class='weather header'><span><img src='%s' /></span><span class='header'>%s&deg;</span></div><div class='weather-highlow'>%s</div>"
-                    weatherData.IconUrl weatherData.Temp weatherData.LowHigh
-            weatherHtml <- outString
-            weatherHtml
-        else 
-            printfn "Skipping weather check."
-            weatherHtml
+    let private getWeather(source: WeatherProvider): string =
+        let weatherHtml =
+            if shouldGetWeather() then
+                printf "\tGetting Weather data from %s..." (source.ToString())
+                let weatherData =
+                    source
+                    |> function
+                    | WeatherBit ->
+                        let res = WebPipe.QuickGet weatherBitForecastCall
+                        let forecast = WeatherBitForecast.Parse(res)
+                        WebPipe.QuickGet weatherBitCurrentCall
+                        |> WeatherBit.Parse
+                        |> (fun w ->
+                        {| Temp = w.Data.[0].Temp |> formatTemp
+                           IconUrl = w.Data.[0].Weather.Icon |> weatherBitIconUrl
+                           LowHigh = formatLowHigh forecast.Data.[0].MinTemp forecast.Data.[0].MaxTemp |})
+                    | OpenWeather ->
+                        WebPipe.QuickGet openWeatherCall
+                        |> OpenWeather.Parse
+                        |> (fun w ->
+                        {| Temp = w.Current.Temp |> formatTemp
+                           IconUrl = w.Current.Weather.[0].Icon |> openWeatherIconUrl
+                           LowHigh = formatLowHigh w.Daily.[0].Temp.Min w.Daily.[0].Temp.Max |})
+                let outString = 
+                    sprintf
+                        "<div class='weather header'><span><img src='%s' /></span><span class='header'>%s&deg;</span></div><div class='weather-highlow'>%s</div>"
+                        weatherData.IconUrl weatherData.Temp weatherData.LowHigh
+                weatherHtml <- outString
+                weatherHtml
+            else 
+                //printfn "\tSkipping weather check."
+                weatherHtml
+        printfn "Done."
+        weatherHtml
 
-    let private CustomIcon(icon: string) =
+    let private customIcon(icon: string) =
         match icon with
         | "c01d" -> "sun.png"
         | "01d" -> "sun.png"
         | _ -> ""
 
-    let private GetTrelloItems() =
-        printfn "Getting Trello items..."
+    let private getTrelloItems() =
+        printf "\tGetting Trello items..."
         let cards = Trello.GetCards trelloListId
-        TrelloCards.Parse(cards)
-        |> Seq.map (fun c -> sprintf "<div class='card-title'>%s</div><div class='card-desc'>%s</div>" c.Name (c.Desc |> StringPipe.KeepStart 50))
-        |> (fun x -> x)
-        |> String.concat ""
-
-    let GetCalendarInfo() = 
-        let calendarDiv = 
-            sprintf "<div class='calendar'>
-                        <ul class='calendar-list'>"
-                        
-        let events = GoogleCalendar.GetEventList "primary" DateTime.Now (DateTime.Now.AddDays(1.))
-        let eventsHtml = 
-            events
-            |> function
-            | Some eventList -> 
-                eventList
-                |> Seq.map (fun event -> 
-                    sprintf "<li>%s<div class='event-time'>%s</div></li>" event.Summary (event.Start.DateTime.Value.ToString("h:mm"))
-                )
-                |> String.concat ""
-            | None -> ""
-        let calendarDivClose = "</ul></div>"
-        sprintf "%s%s%s" calendarDiv eventsHtml calendarDivClose
-        //events.Items |> Seq.iter (fun (e: Event) -> printfn "%s" e.Summary)
+        let trelloHtml =
+            TrelloCards.Parse(cards)
+            |> Seq.map (fun c -> sprintf "<div class='card-title'>%s</div><div class='card-desc'>%s</div>" c.Name (c.Desc |> StringPipe.KeepStart 50))
+            |> String.concat ""
+        printfn "Done."
+        trelloHtml
 
     let GetBodyHtml() : string =
-        let leftContainer = sprintf "<div class='top-container'>%s</div>" GetGreeting
-        let centerContainer = sprintf "<div class='top-container'>%s</div>" GetDateInfo
-        let rightContainer = sprintf "<div class='top-container'>%s</div>" (GetWeather WeatherProvider.OpenWeather)
+        let leftContainer = $"<div class='top-container'>{(getGreeting())}</div>"
+        let centerContainer = sprintf "<div class='top-container'>%s</div>" (getDateInfo())
+        let rightContainer = sprintf "<div class='top-container'>%s</div>" (getWeather WeatherProvider.OpenWeather)
 
         let bigBox =
             sprintf "<div class='big-box'>
@@ -169,5 +163,5 @@ module Settings =
                             <div class='big-box-section-header'>Priority Items</div>
                             <div class='card-container'>%s</div>
                         </div>
-                     </div><div id='timestamp'>%s</div>" (GetTrelloItems()) (DateTimePipe.StampString())
-        sprintf "%s%s%s%s%s" leftContainer centerContainer rightContainer bigBox (GetCalendarInfo())
+                     </div><div id='timestamp'>%s</div>" (getTrelloItems()) (DateTimePipe.StampString())
+        sprintf "%s%s%s%s%s" leftContainer centerContainer rightContainer bigBox (WallDash.FSharp.Calendar.GetCalendarInfo())

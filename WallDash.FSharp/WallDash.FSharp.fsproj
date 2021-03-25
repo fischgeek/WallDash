@@ -45,13 +45,29 @@
     <None Include="html\head.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="html\sample.html" />
-    <None Include="samples\weatherbit.json" />
-    <None Include="samples\openweather.json" />
-    <None Include="samples\trellocards.json" />
-    <None Include="samples\weatherbit_forecast.json" />
+    <None Include="html\sample.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\weatherbit.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\openweather.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\trellocards.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\weatherbit_forecast.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\global_readonly_config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="samples\walldash-config.json" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="SettingsTypes.fs" />
     <Compile Include="Wallpaper.fs" />
+    <Compile Include="Calendar.fs" />
     <Compile Include="Settings.fs" />
     <Compile Include="Actions.fs" />
     <Content Include="packages.config" />
@@ -60,10 +76,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.4.7.0\lib\net45\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Core.5.0.0\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\packages\FSharp.Data.3.3.3\lib\net45\FSharp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharpGoogleCalendar">
+      <HintPath>..\..\FSharpGoogleCalendar\FSharpGoogleCalendar\bin\Debug\net472\FSharpGoogleCalendar.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.49.0\lib\net45\Google.Apis.dll</HintPath>
@@ -75,7 +94,7 @@
       <HintPath>..\packages\Google.Apis.Auth.1.49.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Calendar.v3">
-      <HintPath>..\packages\Google.Apis.Calendar.v3.1.49.0.2119\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
+      <HintPath>..\packages\Google.Apis.Calendar.v3.1.49.0.2187\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Core">
       <HintPath>..\packages\Google.Apis.Core.1.49.0\lib\net45\Google.Apis.Core.dll</HintPath>
@@ -104,19 +123,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FSharpGoogleCalendar\FSharpGoogleCalendar\FSharpGoogleCalendar.fsproj">
-      <Name>FSharpGoogleCalendar</Name>
-      <Project>{c8ef3017-649a-4290-830c-d6c4ac923c68}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\JFSharp\JFSharp\JFSharp.fsproj">
       <Name>JFSharp</Name>
       <Project>{7b8ef634-3eb8-4bc1-bb10-c61c9ffbe162}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\westerncap\SharedFSharpForms\SharedFSharpForms.fsproj">
-      <Name>SharedFSharpForms</Name>
-      <Project>{e9644283-3a41-4ccd-b76f-57dcff4a4d8c}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

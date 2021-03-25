@@ -1,0 +1,15 @@
+﻿{
+    "WorkingDirectory": "c:\\dev\\temp\\walldash\\",
+    "OutputHTMLFile": "c:\\dev\\temp\\walldash\\walldash.html",
+    "TempHTMLFile": "c:\\dev\\temp\\walldash\\temp.html",
+    "WallpaperFile": "c:\\dev\\temp\\walldash\\wallpaper.png",
+    "WeatherBitApiKey": "string",
+    "OpenWeatherApiKey": "string",
+    "Lat": "string",
+    "Lon": "string",
+    "TrelloListId": "string",
+    "GoogleCalendarIds": [
+        "primary",
+        "string"
+    ]
+}

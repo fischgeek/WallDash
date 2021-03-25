@@ -5,62 +5,61 @@ open System
 open System.Diagnostics
 open System.Timers
 open System.IO
+open System.Reflection
 
 module Actions =
-    let private walldir = @"c:\dev\temp\walldash\"
-    let private providedHeadHtml = @"html\head.html"
-    let private wallHtml = @"c:\dev\temp\walldash\walldash.html"
-    let private wallBg = @"c:\dev\temp\walldash\wallpaper.png"
-    let private tempHtml = @"c:\dev\temp\walldash\temp.html"
+    let cfg = SettingsTypes.LoadConfig()
+    let private path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+    let private providedHeadHtml = @$"{path}\html\head.html"
 
     let InitWallDash() =
-        DirectoryPipe.Create walldir
+        DirectoryPipe.Create cfg.WorkingDirectory
 
     let HtmlToImage html (dimensions: int*int) =
         let w,h = dimensions
         let windowSize = sprintf "%i,%i" w h
-        //let stamp = DateTime.Now |> DateTimePipe.ToCompressedStamp
-        //let saveLocation = sprintf @"c:\dev\temp\walldash\%s_wallpaper.png" stamp
-        let saveLocation = @"c:\dev\temp\walldash\wallpaper.png"
-        let ChromeArgs = sprintf """--headless --screenshot=""%s"" --window-size=""%s"" %s""" saveLocation windowSize html
-        //ProcessPipe.StartProcess Settings.ChromeExe ChromeArgs
-        let theProc = ProcessPipe.StartProcessOption Settings.ChromeExe ChromeArgs
+        let chromeArgs = sprintf """--headless --screenshot=""%s"" --window-size=""%s"" %s""" cfg.WallpaperFile windowSize html
+        let theProc = ProcessPipe.StartProcessOption Settings.ChromeExe chromeArgs  
         let rec whileProcExists (proc: Process) =
             ProcessPipe.ExistsById proc.Id
             |> function
             | true -> 
                 System.Threading.Thread.Sleep 500
-                printfn "Process %i exists. Waiting." proc.Id
+                //printfn "Process %i exists. Waiting." proc.Id
                 whileProcExists proc
             | false -> 
-                printfn "Process exited. Moving on."
+                //printfn "Process exited. Moving on."
                 ()
         theProc
         |> function
         | Some p -> whileProcExists p
         | None -> ()
-        saveLocation
+        cfg.WallpaperFile
 
     let Cleanup source = 
-        File.Delete tempHtml
-        File.WriteAllText(tempHtml, source)
+        File.Delete cfg.TempHtmlFile
+        File.WriteAllText(cfg.TempHtmlFile, source)
 
     let DoWallDashStuff() = 
-        printfn "Fetching new data..."
+        let stamp = DateTime.Now.ToLongTimeString()
+        printfn $"[{stamp}] Fetching new data..."
         let headHtml = File.ReadAllText providedHeadHtml
         let bodyHtml = Settings.GetBodyHtml()
+        printf "\tRendering HTML..."
         let source = sprintf "<html>%s%s</html>" headHtml bodyHtml
-        File.WriteAllText(wallHtml, source)
+        File.WriteAllText(cfg.OutputHtmlFile, source)
         Cleanup source
-        let savedImage = HtmlToImage wallHtml (1920, 1080)
+        let savedImage = HtmlToImage cfg.OutputHtmlFile (1920, 1080)
         Wallpaper.Set savedImage None |> ignore
-        printfn "Done"
+        printfn "Done."
+        let stamp = DateTime.Now.ToLongTimeString()
+        printfn $"[{stamp}] Done."
 
     let StartWallDash() = 
         InitWallDash()
         DoWallDashStuff()
-        let timer = new Timers.Timer(60000.)
-        let timerEvent = Async.AwaitEvent (timer.Elapsed) |> Async.Ignore        
+        let timer = new Timers.Timer(300000.)
+        let timerEvent = Async.AwaitEvent (timer.Elapsed) |> Async.Ignore
         timer.Start()
         while true do
             Async.RunSynchronously timerEvent
@@ -69,7 +68,6 @@ module Actions =
 
     let getMonitorDimensions = Settings.MonitorSize
 
-    let checkForGoogleChrome = 
-        ()
+    let checkForGoogleChrome = ()
 
     let SetWallPaper() = Wallpaper.Set @"C:\Users\jeremiah\Dropbox\Jeremiah\Photos\Wallpaper\2ca37eb1.jpg" None

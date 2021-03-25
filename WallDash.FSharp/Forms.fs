@@ -133,12 +133,12 @@ module Forms =
         f.Controls.Add(container)
         
         
-        container.Controls |> Seq.cast<Control> |> Seq.iter (fun c ->
-            SharedFSharpForms.Pipes.FormsPipe.HandleKeyFull true c (Some Keys.Control) Keys.S (fun () -> (MessageBox.Show "hotkey") |> ignore)
-        )
-        f.Controls |> Seq.cast<Control> |> Seq.iter (fun c ->
-            SharedFSharpForms.Pipes.FormsPipe.HandleKeyFull true c (Some Keys.Control) Keys.S (fun () -> (MessageBox.Show "hotkey") |> ignore)
-        )
+        //container.Controls |> Seq.cast<Control> |> Seq.iter (fun c ->
+        //    SharedFSharpForms.Pipes.FormsPipe.HandleKeyFull true c (Some Keys.Control) Keys.S (fun () -> (MessageBox.Show "hotkey") |> ignore)
+        //)
+        //f.Controls |> Seq.cast<Control> |> Seq.iter (fun c ->
+        //    SharedFSharpForms.Pipes.FormsPipe.HandleKeyFull true c (Some Keys.Control) Keys.S (fun () -> (MessageBox.Show "hotkey") |> ignore)
+        //)
         
         
 
