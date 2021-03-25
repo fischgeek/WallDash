@@ -43,8 +43,9 @@ module Actions =
     let DoWallDashStuff() = 
         let stamp = DateTime.Now.ToLongTimeString()
         printfn $"[{stamp}] Fetching new data..."
+        let motd = MOTD.GetVerseOfTheDay stamp // getQuote()
         let headHtml = File.ReadAllText providedHeadHtml
-        let bodyHtml = Settings.GetBodyHtml()
+        let bodyHtml = Settings.GetBodyHtml motd
         printf "\tRendering HTML..."
         let source = sprintf "<html>%s%s</html>" headHtml bodyHtml
         File.WriteAllText(cfg.OutputHtmlFile, source)
