@@ -59,38 +59,14 @@ module Settings =
              |> StringPipe.ToString)
 
     let private formatTemp = DecimalPipe.RoundZero >> StringPipe.ToString
-
-    let private getQuote () = 
-        printf "\tGetting quote..."
-        let quotes = SettingsTypes.LoadQuotes() |> Seq.toArray
-        let random = Random()
-        let ranNum = random.Next(0, quotes.Length)
-        let quote = 
-            let q = quotes.[ranNum]
-            $"{q.Quote}" //<br />- {q.Author}"
-        let quoteFile = @"c:\dev\temp\walldash\quote.txt"
-        let quoteText = 
-            if File.Exists quoteFile then
-                let fi = FileInfo(quoteFile)
-                if fi.CreationTime.Date = DateTime.Now.Date then
-                    File.ReadAllText(quoteFile)
-                else
-                    File.WriteAllText(quoteFile, quote)
-                    quote
-            else
-                File.WriteAllText(quoteFile, quote)
-                quote
-        printfn "Done."
-        quoteText
             
-    let private getGreeting() =
-        let quote = getQuote()
+    let private formatGreeting motd =
         let now = DateTime.Now
         let words =
             if now.Hour > 7 && now.Hour < 12 then "Good Morning!"
             elif now.Hour > 12 && now.Hour < 17 then "Good Afternoon!"
             else "Good Evening!"
-        $"<div id='motd' class='header'>{words}</div><div class='quote'>{quote}</div>"
+        $"<div id='motd' class='header'>{words}</div><div class='quote'>{motd}</div>"
 
     let private getDateInfo() = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.DayOfWeek.ToString()) (DateTime.Now.ToString("MMMM d, yyyy"))
 
@@ -152,8 +128,8 @@ module Settings =
         printfn "Done."
         trelloHtml
 
-    let GetBodyHtml() : string =
-        let leftContainer = $"<div class='top-container'>{(getGreeting())}</div>"
+    let GetBodyHtml motd : string =
+        let leftContainer = $"<div class='top-container'>{(formatGreeting motd)}</div>"
         let centerContainer = sprintf "<div class='top-container'>%s</div>" (getDateInfo())
         let rightContainer = sprintf "<div class='top-container'>%s</div>" (getWeather WeatherProvider.OpenWeather)
 
