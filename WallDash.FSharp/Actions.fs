@@ -47,7 +47,7 @@ module Actions =
         let headHtml = File.ReadAllText providedHeadHtml
         let bodyHtml = Settings.GetBodyHtml motd
         printf "\tRendering HTML..."
-        let source = sprintf "<html><body>%s%s</body></html>" headHtml bodyHtml
+        let source = $"<!DOCTYPE html><html>{headHtml}<body>{bodyHtml}</body></html>"
         File.WriteAllText(cfg.OutputHtmlFile, source)
         Cleanup source
         let savedImage = HtmlToImage cfg.OutputHtmlFile (1920, 1080)

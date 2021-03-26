@@ -146,7 +146,7 @@ module Settings =
         let html = 
             $"
             <div class='container-fluid'>
-                <div class='row' style='text-align: center'>
+                <div class='row' style='text-align: center; margin-bottom: 10px;'>
                     <div class='col-sm'>{formatGreeting motd}</div>
                     <div class='col-sm'>{getDateInfo()}</div>
                     <div class='col-sm'>{getWeather WeatherProvider.OpenWeather}</div>
@@ -168,6 +168,7 @@ module Settings =
                         {Calendar.GetCalendarInfo()}
                     </div>
                 </div>
+                <div id='timestamp'>{DateTimePipe.StampString()}</div>
             </div>
             "
         html
