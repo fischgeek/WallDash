@@ -83,7 +83,7 @@ module Settings =
         printfn "Done."
         quoteText
             
-    let private getGreeting() =
+    let private formatGreeting motd =
         let quote = getQuote()
         let now = DateTime.Now
         let words =
