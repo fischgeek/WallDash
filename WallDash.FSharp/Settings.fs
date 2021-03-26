@@ -143,6 +143,7 @@ module Settings =
         | _ -> ""
 
     let GetBodyHtml motd : string =
+        let name,freeSpace,totalSpace,perc,color = Drive.GetDriveInfo()
         let html = 
             $"
             <div class='container-fluid'>
@@ -151,7 +152,7 @@ module Settings =
                     <div class='col-sm'>{getDateInfo()}</div>
                     <div class='col-sm'>{getWeather WeatherProvider.OpenWeather}</div>
                 </div>
-                <div class='row center-box'>
+                <div class='row center-box' style='margin-bottom: 10px'>
                     <div class='col-sm'>
                         <div class='big-box-section-header'>High Priority Items</div>
                         <div class='card-container'>{Trello.GetTrelloItems()}</div>
@@ -167,6 +168,29 @@ module Settings =
                     <div class='col-sm'>
                         {Calendar.GetCalendarInfo()}
                     </div>
+                    <div class='col-md-auto'>
+                    <div class='item html'>
+                        <h2>{name}</h2>
+                        <span>{freeSpace}GB</span>
+                        <style>
+                            @-webkit-keyframes html {{
+                                to {{
+                                    stroke-dashoffset: {perc};
+                                }}
+                            }}
+                            @keyframes html {{
+                                to {{
+                                    stroke-dashoffset: {perc};
+                                }}
+                            }}
+                        </style>
+                        <svg width='160' height='160' xmlns='http://www.w3.org/2000/svg'>
+                            <g>
+                                <circle class='circle_animation' r='69.85699' cy='81' cx='81' stroke-width='8' stroke='{color}' fill='none' />
+                            </g>
+                        </svg>
+                    </div>
+            </div>
                 </div>
                 <div id='timestamp'>{DateTimePipe.StampString()}</div>
             </div>

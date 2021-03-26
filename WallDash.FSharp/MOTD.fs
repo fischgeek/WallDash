@@ -33,7 +33,7 @@ module MOTD =
         let votdFile = @"c:\dev\temp\walldash\votd.txt"
         if File.Exists votdFile then
             let fi = FileInfo(votdFile)
-            if fi.CreationTime.Date = DateTime.Now.Date then
+            if fi.LastWriteTime.Date = DateTime.Now.Date then
                 File.ReadAllText(votdFile)
             else
                 let votd = 
@@ -48,19 +48,19 @@ module MOTD =
             File.WriteAllText(votdFile, votd)
             votd
 
-    let GetRandomQuote () = 
+    let GetRandomQuote (stamp: string) = 
         printf "\tGetting MOTD..."
         let quotes = SettingsTypes.LoadQuotes() |> Seq.toArray
         let random = Random()
         let ranNum = random.Next(0, quotes.Length)
         let quote = 
             let q = quotes.[ranNum]
-            $"{q.Quote}" //<br />- {q.Author}"
+            $"{q.Quote}<br />- {q.Author}"
         let quoteFile = @"c:\dev\temp\walldash\quote.txt"
         let quoteText = 
             if File.Exists quoteFile then
                 let fi = FileInfo(quoteFile)
-                if fi.CreationTime.Date = DateTime.Now.Date then
+                if fi.LastWriteTime.Date = DateTime.Now.Date then
                     File.ReadAllText(quoteFile)
                 else
                     File.WriteAllText(quoteFile, quote)
