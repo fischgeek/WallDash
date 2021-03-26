@@ -142,26 +142,18 @@ module Settings =
         | "01d" -> "sun.png"
         | _ -> ""
 
-    let private getTrelloItems() =
-        printf "\tGetting Trello items..."
-        let cards = Trello.GetCards trelloListId
-        let trelloHtml =
-            TrelloCards.Parse(cards)
-            |> Seq.map (fun c -> sprintf "<div class='card-title'>%s</div><div class='card-desc'>%s</div>" c.Name (c.Desc |> StringPipe.KeepStart 50))
-            |> String.concat ""
-        printfn "Done."
-        trelloHtml
-
     let GetBodyHtml motd : string =
         let leftContainer = $"<div class='top-container'>{(formatGreeting motd)}</div>"
         let centerContainer = sprintf "<div class='top-container'>%s</div>" (getDateInfo())
         let rightContainer = sprintf "<div class='top-container'>%s</div>" (getWeather WeatherProvider.OpenWeather)
 
         let bigBox =
-            sprintf "<div class='big-box'>
+            $"<div class='big-box'>
                         <div class='big-box-section'>
                             <div class='big-box-section-header'>Priority Items</div>
-                            <div class='card-container'>%s</div>
+                            <div class='card-container'>{Trello.GetTrelloItems()}</div>
                         </div>
-                     </div><div id='timestamp'>%s</div>" (getTrelloItems()) (DateTimePipe.StampString())
+                     </div>
+                     <div id='timestamp'>{DateTimePipe.StampString()}</div>" 
+        
         sprintf "%s%s%s%s%s" leftContainer centerContainer rightContainer bigBox (WallDash.FSharp.Calendar.GetCalendarInfo())

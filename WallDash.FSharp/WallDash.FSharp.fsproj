@@ -67,6 +67,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SettingsTypes.fs" />
     <Compile Include="MOTD.fs" />
+    <Compile Include="Trello.fs" />
     <Compile Include="Wallpaper.fs" />
     <Compile Include="Calendar.fs" />
     <Compile Include="Settings.fs" />
