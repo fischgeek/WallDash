@@ -143,17 +143,31 @@ module Settings =
         | _ -> ""
 
     let GetBodyHtml motd : string =
-        let leftContainer = $"<div class='top-container'>{(formatGreeting motd)}</div>"
-        let centerContainer = sprintf "<div class='top-container'>%s</div>" (getDateInfo())
-        let rightContainer = sprintf "<div class='top-container'>%s</div>" (getWeather WeatherProvider.OpenWeather)
-
-        let bigBox =
-            $"<div class='big-box'>
-                        <div class='big-box-section'>
-                            <div class='big-box-section-header'>Priority Items</div>
-                            <div class='card-container'>{Trello.GetTrelloItems()}</div>
-                        </div>
-                     </div>
-                     <div id='timestamp'>{DateTimePipe.StampString()}</div>" 
-        
-        sprintf "%s%s%s%s%s" leftContainer centerContainer rightContainer bigBox (WallDash.FSharp.Calendar.GetCalendarInfo())
+        let html = 
+            $"
+            <div class='container-fluid'>
+                <div class='row' style='text-align: center'>
+                    <div class='col-sm'>{formatGreeting motd}</div>
+                    <div class='col-sm'>{getDateInfo()}</div>
+                    <div class='col-sm'>{getWeather WeatherProvider.OpenWeather}</div>
+                </div>
+                <div class='row center-box'>
+                    <div class='col-sm'>
+                        <div class='big-box-section-header'>High Priority Items</div>
+                        <div class='card-container'>{Trello.GetTrelloItems()}</div>
+                    </div>
+                    <div class='col-sm'>
+                        <div class='big-box-section-header'></div>
+                    </div>
+                    <div class='col-sm'>
+                        <div class='big-box-section-header'></div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-sm'>
+                        {Calendar.GetCalendarInfo()}
+                    </div>
+                </div>
+            </div>
+            "
+        html
