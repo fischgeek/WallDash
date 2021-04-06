@@ -11,9 +11,15 @@ module Actions =
     let cfg = SettingsTypes.LoadConfig()
     let private path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
     let private providedHeadHtml = @$"{path}\html\head.html"
+    let private providedEndingBody = @$"{path}\html\ending_body.html"
 
     let InitWallDash() =
         DirectoryPipe.Create cfg.WorkingDirectory
+        DirectoryPipe.Create @"c:\dev\temp\walldash\html\js"
+        DirectoryPipe.Create @"c:\dev\temp\walldash\html\css"
+        FilePipe.CopyWithOverwrite $@"{path}\html\js\jquery.min.js" @"c:\dev\temp\walldash\html\js\jquery.min.js"
+        FilePipe.CopyWithOverwrite $@"{path}\html\js\percircle.js" @"c:\dev\temp\walldash\html\js\percircle.js"
+        FilePipe.CopyWithOverwrite $@"{path}\html\css\percircle.css" @"c:\dev\temp\walldash\html\js\percircle.css"
 
     let HtmlToImage html (dimensions: int*int) =
         let w,h = dimensions
@@ -43,11 +49,13 @@ module Actions =
     let DoWallDashStuff() = 
         let stamp = DateTime.Now.ToLongTimeString()
         printfn $"[{stamp}] Fetching new data..."
-        let motd = MOTD.GetRandomQuote stamp // getQuote()
+        let motd = MOTD.GetVerseOfTheDay stamp // MOTD.GetRandomQuote stamp // getQuote()
         let headHtml = File.ReadAllText providedHeadHtml
+        let endingBody = File.ReadAllText providedEndingBody
         let bodyHtml = Settings.GetBodyHtml motd
+
         printf "\tRendering HTML..."
-        let source = $"<!DOCTYPE html><html>{headHtml}<body>{bodyHtml}</body></html>"
+        let source = $"<!DOCTYPE html><html>{headHtml}<body>{bodyHtml}{endingBody}</body></html>"
         File.WriteAllText(cfg.OutputHtmlFile, source)
         Cleanup source
         let savedImage = HtmlToImage cfg.OutputHtmlFile (1920, 1080)

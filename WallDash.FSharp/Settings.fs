@@ -84,7 +84,7 @@ module Settings =
         quoteText
             
     let private formatGreeting motd =
-        let quote = getQuote()
+        //let quote = MOTD.GetVerseOfTheDay()   // getQuote()
         let now = DateTime.Now
         let words =
             if now.Hour > 7 && now.Hour < 12 then "Good Morning!"
@@ -143,19 +143,24 @@ module Settings =
         | _ -> ""
 
     let GetBodyHtml motd : string =
-        let name,freeSpace,totalSpace,perc,color = Drive.GetDriveInfo()
+        let greeting = formatGreeting motd
+        let date = getDateInfo()
+        let weather = getWeather WeatherProvider.WeatherBit // WeatherProvider.OpenWeather
+        let trello = Trello.GetTrelloItems()
+        let cal = Calendar.GetCalendarInfo()
+        let driveInfo = Drive.GetDriveInfo()
         let html = 
             $"
             <div class='container-fluid'>
                 <div class='row' style='text-align: center; margin-bottom: 10px;'>
-                    <div class='col-sm'>{formatGreeting motd}</div>
-                    <div class='col-sm'>{getDateInfo()}</div>
-                    <div class='col-sm'>{getWeather WeatherProvider.OpenWeather}</div>
+                    <div class='col-sm'>{greeting}</div>
+                    <div class='col-sm'>{date}</div>
+                    <div id='weather-container' class='col-sm'>{weather}</div>
                 </div>
                 <div class='row center-box' style='margin-bottom: 10px'>
                     <div class='col-sm'>
                         <div class='big-box-section-header'>High Priority Items</div>
-                        <div class='card-container'>{Trello.GetTrelloItems()}</div>
+                        <div class='card-container'>{trello}</div>
                     </div>
                     <div class='col-sm'>
                         <div class='big-box-section-header'></div>
@@ -166,31 +171,11 @@ module Settings =
                 </div>
                 <div class='row'>
                     <div class='col-sm'>
-                        {Calendar.GetCalendarInfo()}
+                        {cal}
                     </div>
                     <div class='col-md-auto'>
-                    <div class='item html'>
-                        <h2>{name}</h2>
-                        <span>{freeSpace}GB</span>
-                        <style>
-                            @-webkit-keyframes html {{
-                                to {{
-                                    stroke-dashoffset: {perc};
-                                }}
-                            }}
-                            @keyframes html {{
-                                to {{
-                                    stroke-dashoffset: {perc};
-                                }}
-                            }}
-                        </style>
-                        <svg width='160' height='160' xmlns='http://www.w3.org/2000/svg'>
-                            <g>
-                                <circle class='circle_animation' r='69.85699' cy='81' cx='81' stroke-width='8' stroke='{color}' fill='none' />
-                            </g>
-                        </svg>
+                        {driveInfo}
                     </div>
-            </div>
                 </div>
                 <div id='timestamp'>{DateTimePipe.StampString()}</div>
             </div>

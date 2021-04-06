@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WallDash.Console": {
+      "commandName": "Project",
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "jeremiahwcri-dt",
+      "authenticationMode": "Windows"
+    }
+  }
+}
