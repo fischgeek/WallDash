@@ -173,7 +173,7 @@ module Settings =
                     <div class='col-sm'>
                         {cal}
                     </div>
-                    <div class='col-md-auto'>
+                    <div class='col-md-auto' style='width:150px'>
                         {driveInfo}
                     </div>
                 </div>

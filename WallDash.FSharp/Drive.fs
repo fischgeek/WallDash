@@ -7,78 +7,109 @@ open JFSharp
 open JFSharp.Pipes
 open System.Management.Instrumentation
 
-module Drive = 
+module Drive =
     let cfg = SettingsTypes.LoadConfig()
-    type DriveSpecs = 
-        {
-            Name: string
-            TotalSpace: int64
-            FreeSpace: int64
-            PercentSpace: decimal
-            Color: string
-        }
+    
+    type DriveSpecs =
+        { Name: string
+          TotalSpaceGB: decimal
+          TotalSpaceTB: decimal
+          DisplayTotalSpace: string
+          DisplayFreeSpace: string
+          FreeSpace: decimal
+          UsedSpace: decimal
+          PercentUsed: decimal
+          Color: string }
 
-    let calculateDriveSpace (drive: DriveInfo) = 
-        let ttf = (int64)1024
-        let circleRad = 440M
+    let getTbValue (sizeValue: int64) =
+        let ttfdecimal = 1024M
+        Math.Round((decimal) sizeValue
+        / ttfdecimal
+        / ttfdecimal
+        / ttfdecimal
+        / ttfdecimal,2)
+
+    let getGbValue (sizeValue: int64) = 
+        let ttf = 1024M
+        Math.Round((decimal) sizeValue / ttf / ttf / ttf,2)
+
+    let getSizeTuple (sizeValue: int64) = (getGbValue sizeValue, getTbValue sizeValue)
+
+    let calculateDriveSpace (drive: DriveInfo) =
         let name = drive.Name.Replace(@":\", "")
-        let totalSpace = drive.TotalSize / ttf / ttf / ttf
-        let totalSpaceSuffix = if totalSpace >= ttf then "TB" else "GB"
-        let freeSpace = drive.TotalFreeSpace / ttf / ttf / ttf
-        let freeSpaceSuffix = if freeSpace >= ttf then "TB" else "GB"
-        let decimalValueOfDiff = (decimal)freeSpace / (decimal)totalSpace
-        let diffPercentage = Math.Round(decimalValueOfDiff * 100M, 0)
-        let usedPercentage = (int)(100M - diffPercentage)
-        
-        let color = 
-            if usedPercentage >=< (0,50) then "green"
-            elif usedPercentage >=< (51,75) then "orange"
-            elif usedPercentage >=< (76,100) then "red"
-            else "blue"
-            
-        let x = (circleRad * decimalValueOfDiff)
-        let perc = Math.Round(x, 0) // Math.Round(circleRad - x, 0)
-        { Name = name; FreeSpace = freeSpace; TotalSpace = totalSpace; PercentSpace = perc; Color = color; }
+        let totalSizeInGB,totalSizeInTB = getSizeTuple drive.TotalSize
+        let freeSpaceInGB,freeSpaceInTB = getSizeTuple drive.TotalFreeSpace
+        let usedSpace = totalSizeInGB - freeSpaceInGB
+        let displayTotalSize = 
+            if totalSizeInTB >= 1M
+            then $"{Math.Round(totalSizeInTB,1)}TB" 
+            else $"{Math.Round(totalSizeInGB,0)}GB"
+        let displayFree = 
+            if freeSpaceInTB >= 1M
+            then $"{Math.Round(freeSpaceInTB,1)}TB"
+            else $"{Math.Round(freeSpaceInGB,0)}GB"
 
-    let private getSpecificDriveInfo (labelLetters: string[]) = 
+        let usedSpaceDiff = usedSpace / totalSizeInGB
+        let usedPercentage = Math.Round(usedSpaceDiff * 100M, 0)
+        let color =
+            if usedPercentage >=< (0M, 50M) then "green"
+            elif usedPercentage >=< (51M, 75M) then "orange"
+            elif usedPercentage >=< (76M, 100M) then "red"
+            else "blue"
+
+        //printfn $"Drive {name}"
+        //printfn $" TotalSpaceGB {totalSizeInGB}"
+        //printfn $" TotalSpaceTB {totalSizeInTB}"
+        //printfn $" UsedSpace {usedSpace}"
+        //printfn $" FreeSpace {freeSpaceInGB}"
+        //printfn $" Percentage {usedPercentage}"
+        //printfn $" Color {color}"
+
+        { Name = name
+          FreeSpace = freeSpaceInGB
+          TotalSpaceGB = totalSizeInGB
+          TotalSpaceTB = totalSizeInTB
+          DisplayTotalSpace = displayTotalSize
+          DisplayFreeSpace = displayFree
+          UsedSpace = usedSpace
+          PercentUsed = usedPercentage
+          Color = color }
+
+    let private getSpecificDriveInfo (labelLetters: string []) =
         DriveInfo.GetDrives()
-        |> Seq.map (fun d ->
-            labelLetters 
-            |> Seq.map (fun l -> if d.Name = @$"{l}:\" then Some d else None)
-            |> Seq.toList
-        )
+        |> Seq.map
+            (fun d ->
+                labelLetters
+                |> Seq.map
+                    (fun l ->
+                        if d.Name = $"{l}:\\" then
+                            Some d
+                        else
+                            None)
+                |> Seq.toList)
         |> Seq.toList
         |> Seq.concat
         |> OptionPipe.UnwrapSomes
         |> Seq.map (calculateDriveSpace)
         |> Seq.toList
 
-    let private generateDriveHtml (drives: DriveSpecs list) = 
+    //<style>#{x.Name}-drive span {{ color: {x.Color} }}</style>
+    let private generateDriveHtml (drives: DriveSpecs list) =
         drives
-        |> Seq.map (fun x -> 
-        $"
-        <div>
-            <style>
-                #drive-{x.Name} {{
-                    stroke-dasharray: {x.PercentSpace};
-                    stroke-dashoffset: {x.PercentSpace};
-                }}
-            </style>
-            <div class='item html'>
-                <div class='drive-labels'>
-                    <h2>{x.Name}</h2>
-                    <span>{x.FreeSpace}GB</span>
-                </div>
-                <svg width='160' height='160' xmlns='http://www.w3.org/2000/svg'>
-                    <g>
-                        <circle id='drive-{x.Name}' class='circle_animation' r='69.85699' cy='81' cx='81' stroke-width='8' stroke='{x.Color}' fill='none' />
-                    </g>
-                </svg>
-            </div>
-        </div>")
+        |> Seq.map
+            (fun x -> 
+                $"
+                    <div id='{x.Name}-drive' data-percent='{x.PercentUsed}' data-text='{x.Name}' data-animate='false' class='{x.Color} medium circle'>
+                        <span class='drive-space'>{x.DisplayFreeSpace}</span>
+                    </div>
+                ")
         |> String.concat ""
 
-    let GetDriveInfo() = 
-        cfg.Drives 
+    let GetDriveInfo () =
+        printf "\tGetting Drive info..."
+        cfg.Drives
         |> getSpecificDriveInfo
+        |> (fun x -> 
+            printfn "Done."
+            x)
         |> generateDriveHtml
