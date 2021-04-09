@@ -76,11 +76,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="samples\walldash-config.json" />
+    <None Include="samples\tomorrowio.json" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SettingsTypes.fs" />
     <Compile Include="Drive.fs" />
     <Compile Include="MOTD.fs" />
     <Compile Include="Trello.fs" />
+    <Compile Include="Weather.fs" />
     <Compile Include="Wallpaper.fs" />
     <Compile Include="Calendar.fs" />
     <Compile Include="Settings.fs" />

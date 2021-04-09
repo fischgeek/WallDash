@@ -18,23 +18,6 @@ module Settings =
 
     let private monitorDimensions = a.["MonitorDimensions"]
     let private trelloListId = System.Configuration.ConfigurationManager.AppSettings.["TrelloListId"]
-    let private weaterhBitApi = System.Configuration.ConfigurationManager.AppSettings.["WeatherBitApi"]
-    let private openWeatherApi = System.Configuration.ConfigurationManager.AppSettings.["OpenWeatherApi"]
-    let private lat = System.Configuration.ConfigurationManager.AppSettings.["Lat"]
-    let private lon = System.Configuration.ConfigurationManager.AppSettings.["Lon"]
-    let private latLong = sprintf "lat=%s&lon=%s" lat lon
-
-    let private openWeatherBase = "https://api.openweathermap.org/data/2.5/onecall"
-    let private openWeatherCall = sprintf "%s?%s&units=imperial&appid=%s" openWeatherBase latLong openWeatherApi
-    let private openWeatherIconUrl iconCode = sprintf "http://openweathermap.org/img/wn/%s@2x.png" iconCode
-
-    let private weatherBitBase = "https://api.weatherbit.io/v2.0"
-    let private weatherBitForecastCall = sprintf "%s/forecast/daily?%s&units=i&key=%s" weatherBitBase latLong weaterhBitApi
-    let private weatherBitCurrentCall = sprintf "%s/current?&%s&units=i&key=%s" weatherBitBase latLong weaterhBitApi
-    let private weatherBitIconUrl iconCode = sprintf "https://www.weatherbit.io/static/img/icons/%s.png" iconCode
-
-    let mutable lastWeatherCheckTime = DateTime.Now.AddHours -1.0
-    let mutable weatherHtml = ""
 
     let MonitorSize = 
         if monitorDimensions = null then failwith "Failed to get monitor dimensions from settings"
@@ -48,17 +31,6 @@ module Settings =
             | Int h -> h
             | _ -> 1080
         (width, height)
-
-    let private formatLowHigh low high =
-        sprintf "Low: %s | High: %s"
-            (low
-             |> DecimalPipe.RoundZero
-             |> StringPipe.ToString)
-            (high
-             |> DecimalPipe.RoundZero
-             |> StringPipe.ToString)
-
-    let private formatTemp = DecimalPipe.RoundZero >> StringPipe.ToString
 
     let private getQuote () = 
         printf "\tGetting MOTD..."
@@ -94,58 +66,10 @@ module Settings =
 
     let private getDateInfo() = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.DayOfWeek.ToString()) (DateTime.Now.ToString("MMMM d, yyyy"))
 
-    let private shouldGetWeather() = 
-        let now = DateTime.Now
-        let diff = now - lastWeatherCheckTime
-        //printfn "It has been %f seconds since the last weather check." diff.TotalSeconds
-        lastWeatherCheckTime <- now
-        diff.TotalSeconds >= 300.0
-
-    let private getWeather(source: WeatherProvider): string =
-        let weatherHtml =
-            if shouldGetWeather() then
-                printf "\tGetting Weather data from %s..." (source.ToString())
-                let weatherData =
-                    source
-                    |> function
-                    | WeatherBit ->
-                        let res = WebPipe.QuickGet weatherBitForecastCall
-                        let forecast = WeatherBitForecast.Parse(res)
-                        WebPipe.QuickGet weatherBitCurrentCall
-                        |> WeatherBit.Parse
-                        |> (fun w ->
-                        {| Temp = w.Data.[0].Temp |> formatTemp
-                           IconUrl = w.Data.[0].Weather.Icon |> weatherBitIconUrl
-                           LowHigh = formatLowHigh forecast.Data.[0].MinTemp forecast.Data.[0].MaxTemp |})
-                    | OpenWeather ->
-                        WebPipe.QuickGet openWeatherCall
-                        |> OpenWeather.Parse
-                        |> (fun w ->
-                        {| Temp = w.Current.Temp |> formatTemp
-                           IconUrl = w.Current.Weather.[0].Icon |> openWeatherIconUrl
-                           LowHigh = formatLowHigh w.Daily.[0].Temp.Min w.Daily.[0].Temp.Max |})
-                let outString = 
-                    sprintf
-                        "<div class='weather header'><span><img src='%s' /></span><span class='header'>%s&deg;</span></div><div class='weather-highlow'>%s</div>"
-                        weatherData.IconUrl weatherData.Temp weatherData.LowHigh
-                weatherHtml <- outString
-                weatherHtml
-            else 
-                //printfn "\tSkipping weather check."
-                weatherHtml
-        printfn "Done."
-        weatherHtml
-
-    let private customIcon(icon: string) =
-        match icon with
-        | "c01d" -> "sun.png"
-        | "01d" -> "sun.png"
-        | _ -> ""
-
     let GetBodyHtml motd : string =
         let greeting = formatGreeting motd
         let date = getDateInfo()
-        let weather = getWeather WeatherProvider.WeatherBit // WeatherProvider.OpenWeather
+        let weather = Weather.GetWeather()
         let trello = Trello.GetTrelloItems()
         let cal = Calendar.GetCalendarInfo()
         let driveInfo = Drive.GetDriveInfo()

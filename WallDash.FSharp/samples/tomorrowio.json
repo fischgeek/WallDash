@@ -1,0 +1,769 @@
+﻿{
+  "data": {
+    "timelines": [
+      {
+        "timestep": "1h",
+        "startTime": "2021-04-09T10:06:00-05:00",
+        "endTime": "2021-04-13T21:06:00-05:00",
+        "intervals": [
+          {
+            "startTime": "2021-04-09T10:06:00-05:00",
+            "values": {
+              "temperature": 4.07,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-09T11:06:00-05:00",
+            "values": {
+              "temperature": 4.23,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-09T12:06:00-05:00",
+            "values": {
+              "temperature": 5.15,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-09T13:06:00-05:00",
+            "values": {
+              "temperature": 5.87,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-09T14:06:00-05:00",
+            "values": {
+              "temperature": 6.76,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-09T15:06:00-05:00",
+            "values": {
+              "temperature": 7.79,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T16:06:00-05:00",
+            "values": {
+              "temperature": 8.14,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T17:06:00-05:00",
+            "values": {
+              "temperature": 9.2,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T18:06:00-05:00",
+            "values": {
+              "temperature": 9.59,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T19:06:00-05:00",
+            "values": {
+              "temperature": 8.4,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T20:06:00-05:00",
+            "values": {
+              "temperature": 7.1,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T21:06:00-05:00",
+            "values": {
+              "temperature": 6.17,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T22:06:00-05:00",
+            "values": {
+              "temperature": 5.32,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-09T23:06:00-05:00",
+            "values": {
+              "temperature": 4.73,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-10T00:06:00-05:00",
+            "values": {
+              "temperature": 3.87,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-10T01:06:00-05:00",
+            "values": {
+              "temperature": 3.42,
+              "weatherCode": 1101
+            }
+          },
+          {
+            "startTime": "2021-04-10T02:06:00-05:00",
+            "values": {
+              "temperature": 2.9,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T03:06:00-05:00",
+            "values": {
+              "temperature": 2.49,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T04:06:00-05:00",
+            "values": {
+              "temperature": 1.78,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T05:06:00-05:00",
+            "values": {
+              "temperature": 1.8,
+              "weatherCode": 1100
+            }
+          },
+          {
+            "startTime": "2021-04-10T06:06:00-05:00",
+            "values": {
+              "temperature": 1.18,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T07:06:00-05:00",
+            "values": {
+              "temperature": 0.67,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T08:06:00-05:00",
+            "values": {
+              "temperature": 2.48,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T09:06:00-05:00",
+            "values": {
+              "temperature": 4.6,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T10:06:00-05:00",
+            "values": {
+              "temperature": 6.6,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T11:06:00-05:00",
+            "values": {
+              "temperature": 8.67,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T12:06:00-05:00",
+            "values": {
+              "temperature": 10.6,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T13:06:00-05:00",
+            "values": {
+              "temperature": 12.04,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T14:06:00-05:00",
+            "values": {
+              "temperature": 13.06,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T15:06:00-05:00",
+            "values": {
+              "temperature": 13.69,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T16:06:00-05:00",
+            "values": {
+              "temperature": 13.99,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T17:06:00-05:00",
+            "values": {
+              "temperature": 14.05,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T18:06:00-05:00",
+            "values": {
+              "temperature": 13.6,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T19:06:00-05:00",
+            "values": {
+              "temperature": 11.85,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T20:06:00-05:00",
+            "values": {
+              "temperature": 7.44,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T21:06:00-05:00",
+            "values": {
+              "temperature": 6.18,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T22:06:00-05:00",
+            "values": {
+              "temperature": 4.83,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-10T23:06:00-05:00",
+            "values": {
+              "temperature": 3.22,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T00:06:00-05:00",
+            "values": {
+              "temperature": 2.48,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T01:06:00-05:00",
+            "values": {
+              "temperature": 2.14,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T02:06:00-05:00",
+            "values": {
+              "temperature": 1.46,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T03:06:00-05:00",
+            "values": {
+              "temperature": 0.23,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T04:06:00-05:00",
+            "values": {
+              "temperature": -0.52,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T05:06:00-05:00",
+            "values": {
+              "temperature": -1.46,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T06:06:00-05:00",
+            "values": {
+              "temperature": -1.93,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T07:06:00-05:00",
+            "values": {
+              "temperature": -1.72,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T08:06:00-05:00",
+            "values": {
+              "temperature": 1.36,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T09:06:00-05:00",
+            "values": {
+              "temperature": 4.51,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T10:06:00-05:00",
+            "values": {
+              "temperature": 7.53,
+              "weatherCode": 1000
+            }
+          },
+          {
+            "startTime": "2021-04-11T11:06:00-05:00",
+            "values": {
+              "temperature": 9.58,
+              "weatherCode": 1100
+            }
+          },
+          {
+            "startTime": "2021-04-11T12:06:00-05:00",
+            "values": {
+              "temperature": 10.85,
+              "weatherCode": 1101
+            }
+          },
+          {
+            "startTime": "2021-04-11T13:06:00-05:00",
+            "values": {
+              "temperature": 11.6,
+              "weatherCode": 1100
+            }
+          },
+          {
+            "startTime": "2021-04-11T14:06:00-05:00",
+            "values": {
+              "temperature": 12.48,
+              "weatherCode": 1100
+            }
+          },
+          {
+            "startTime": "2021-04-11T15:06:00-05:00",
+            "values": {
+              "temperature": 13.01,
+              "weatherCode": 1100
+            }
+          },
+          {
+            "startTime": "2021-04-11T16:06:00-05:00",
+            "values": {
+              "temperature": 13.27,
+              "weatherCode": 1101
+            }
+          },
+          {
+            "startTime": "2021-04-11T17:06:00-05:00",
+            "values": {
+              "temperature": 12.75,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-11T18:06:00-05:00",
+            "values": {
+              "temperature": 11.71,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-11T19:06:00-05:00",
+            "values": {
+              "temperature": 10.26,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-11T20:06:00-05:00",
+            "values": {
+              "temperature": 8.36,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-11T21:06:00-05:00",
+            "values": {
+              "temperature": 7.57,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-11T22:06:00-05:00",
+            "values": {
+              "temperature": 7.08,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-11T23:06:00-05:00",
+            "values": {
+              "temperature": 6.35,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T00:06:00-05:00",
+            "values": {
+              "temperature": 5.72,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T01:06:00-05:00",
+            "values": {
+              "temperature": 5.14,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T02:06:00-05:00",
+            "values": {
+              "temperature": 4.51,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T03:06:00-05:00",
+            "values": {
+              "temperature": 3.78,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T04:06:00-05:00",
+            "values": {
+              "temperature": 2.73,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T05:06:00-05:00",
+            "values": {
+              "temperature": 1.76,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T06:06:00-05:00",
+            "values": {
+              "temperature": 1.51,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T07:06:00-05:00",
+            "values": {
+              "temperature": 1.36,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T08:06:00-05:00",
+            "values": {
+              "temperature": 1.38,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T09:06:00-05:00",
+            "values": {
+              "temperature": 1.61,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T10:06:00-05:00",
+            "values": {
+              "temperature": 1.65,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T11:06:00-05:00",
+            "values": {
+              "temperature": 1.72,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T12:06:00-05:00",
+            "values": {
+              "temperature": 1.54,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T13:06:00-05:00",
+            "values": {
+              "temperature": 1.43,
+              "weatherCode": 4000
+            }
+          },
+          {
+            "startTime": "2021-04-12T14:06:00-05:00",
+            "values": {
+              "temperature": 1.4,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T15:06:00-05:00",
+            "values": {
+              "temperature": 1.43,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T16:06:00-05:00",
+            "values": {
+              "temperature": 1.29,
+              "weatherCode": 4200
+            }
+          },
+          {
+            "startTime": "2021-04-12T17:06:00-05:00",
+            "values": {
+              "temperature": 1.09,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T18:06:00-05:00",
+            "values": {
+              "temperature": 0.82,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T19:06:00-05:00",
+            "values": {
+              "temperature": 0.54,
+              "weatherCode": 5100
+            }
+          },
+          {
+            "startTime": "2021-04-12T20:06:00-05:00",
+            "values": {
+              "temperature": 0.36,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-12T21:06:00-05:00",
+            "values": {
+              "temperature": 0.11,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-12T22:06:00-05:00",
+            "values": {
+              "temperature": -0.16,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-12T23:06:00-05:00",
+            "values": {
+              "temperature": -0.51,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T00:06:00-05:00",
+            "values": {
+              "temperature": -0.8,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T01:06:00-05:00",
+            "values": {
+              "temperature": -0.95,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T02:06:00-05:00",
+            "values": {
+              "temperature": -1.11,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-13T03:06:00-05:00",
+            "values": {
+              "temperature": -1.47,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T04:06:00-05:00",
+            "values": {
+              "temperature": -1.83,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T05:06:00-05:00",
+            "values": {
+              "temperature": -2.06,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T06:06:00-05:00",
+            "values": {
+              "temperature": -1.98,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T07:06:00-05:00",
+            "values": {
+              "temperature": -1.93,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T08:06:00-05:00",
+            "values": {
+              "temperature": -1.82,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-13T09:06:00-05:00",
+            "values": {
+              "temperature": -1.39,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-13T10:06:00-05:00",
+            "values": {
+              "temperature": -0.94,
+              "weatherCode": 1001
+            }
+          },
+          {
+            "startTime": "2021-04-13T11:06:00-05:00",
+            "values": {
+              "temperature": -0.72,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T12:06:00-05:00",
+            "values": {
+              "temperature": -0.74,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T13:06:00-05:00",
+            "values": {
+              "temperature": -0.67,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T14:06:00-05:00",
+            "values": {
+              "temperature": -0.56,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T15:06:00-05:00",
+            "values": {
+              "temperature": -0.51,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T16:06:00-05:00",
+            "values": {
+              "temperature": -0.52,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T17:06:00-05:00",
+            "values": {
+              "temperature": -0.65,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T18:06:00-05:00",
+            "values": {
+              "temperature": -0.69,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T19:06:00-05:00",
+            "values": {
+              "temperature": -0.67,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T20:06:00-05:00",
+            "values": {
+              "temperature": -0.84,
+              "weatherCode": 5001
+            }
+          },
+          {
+            "startTime": "2021-04-13T21:06:00-05:00",
+            "values": {
+              "temperature": -1.01,
+              "weatherCode": 5001
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
