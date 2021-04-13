@@ -3,12 +3,12 @@ namespace WallDash.FSharp
 open JFSharp
 open System
 open System.IO
-open TrelloConnectFSharp
+open TrelloConnect
 open JFSharp.Pipes
 open WallDash.FSharp.SettingsTypes
 
 module Settings =
-    let cfg = LoadConfig()
+    let cfg : Config.Config = LoadConfig()
     let GoogleCalendarCredentials = @"c:\dev\config\google-calendar-credentials.json"
     let ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
     let a = System.Configuration.ConfigurationManager.AppSettings
@@ -17,7 +17,6 @@ module Settings =
     let private calendar3 = a.["Calendar3"]
 
     let private monitorDimensions = a.["MonitorDimensions"]
-    let private trelloListId = System.Configuration.ConfigurationManager.AppSettings.["TrelloListId"]
 
     let MonitorSize = 
         if monitorDimensions = null then failwith "Failed to get monitor dimensions from settings"

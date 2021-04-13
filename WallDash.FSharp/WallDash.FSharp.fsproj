@@ -60,23 +60,6 @@
     <None Include="html\ending_body.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="samples\weatherbit.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="samples\openweather.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="samples\trellocards.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="samples\weatherbit_forecast.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="samples\global_readonly_config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="samples\walldash-config.json" />
-    <None Include="samples\tomorrowio.json" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SettingsTypes.fs" />
     <Compile Include="Drive.fs" />
@@ -146,9 +129,6 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TrelloConnectFSharp">
-      <HintPath>lib\TrelloConnectFSharp.dll</HintPath>
-    </Reference>
     <Reference Include="WebDriver">
       <HintPath>..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
@@ -157,6 +137,11 @@
     <ProjectReference Include="..\..\JFSharp\JFSharp\JFSharp.fsproj">
       <Name>JFSharp</Name>
       <Project>{7b8ef634-3eb8-4bc1-bb10-c61c9ffbe162}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TrelloConnect\TrelloConnect.fsproj">
+      <Name>TrelloConnect</Name>
+      <Project>{c22feda0-2fd5-4d54-9066-d1e5a8a0c9b9}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
