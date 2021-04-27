@@ -87,9 +87,6 @@
     <Reference Include="FSharp.Data">
       <HintPath>..\packages\FSharp.Data.3.3.3\lib\net45\FSharp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="FSharpGoogleCalendar">
-      <HintPath>..\..\FSharpGoogleCalendar\FSharpGoogleCalendar\bin\Debug\net472\FSharpGoogleCalendar.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.49.0\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
@@ -134,14 +131,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FSharpGoogleCalendar\FSharpGoogleCalendar\FSharpGoogleCalendar.fsproj">
+      <Name>FSharpGoogleCalendar</Name>
+      <Project>{a319a464-f212-4592-ab1e-de2f2111a5ba}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\JFSharp\JFSharp\JFSharp.fsproj">
       <Name>JFSharp</Name>
       <Project>{7b8ef634-3eb8-4bc1-bb10-c61c9ffbe162}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\TrelloConnect\TrelloConnect.fsproj">
+    <ProjectReference Include="..\..\TrelloConnect\TrelloConnect\TrelloConnect.fsproj">
       <Name>TrelloConnect</Name>
-      <Project>{c22feda0-2fd5-4d54-9066-d1e5a8a0c9b9}</Project>
+      <Project>{c3dd0fc0-e512-4f49-b341-59d9dd44843f}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
