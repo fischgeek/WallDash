@@ -72,6 +72,7 @@ module Settings =
         let trelloCol1,trelloCol2,trelloCol3 = Trello.GetTrelloItems()
         let cal = Calendar.GetCalendarInfo()
         let driveInfo = Drive.GetDriveInfo()
+        let dropboxInfo = Dropbox.GetSpace()
         let html = 
             $"
             <div class='container-fluid'>
@@ -97,6 +98,9 @@ module Settings =
                 <div class='row'>
                     <div class='col-sm'>
                         {cal}
+                    </div>
+                    <div class='col-md-auto' style='width:150px'>
+                        {dropboxInfo}
                     </div>
                     <div class='col-md-auto' style='width:150px'>
                         {driveInfo}
