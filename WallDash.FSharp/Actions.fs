@@ -70,7 +70,9 @@ module Actions =
         let timer = new Timers.Timer(300000.)
         let timerEvent = Async.AwaitEvent (timer.Elapsed) |> Async.Ignore
         timer.Start()
-        while true do
+        let mutable shouldRun = true
+        while shouldRun do
+            shouldRun <- DateTime.Now.Hour > 6 && DateTime.Now.Hour < 23 
             Async.RunSynchronously timerEvent
             printfn "%A" DateTime.Now
             DoWallDashStuff()
