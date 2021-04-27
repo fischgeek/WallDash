@@ -69,7 +69,7 @@ module Settings =
         let greeting = formatGreeting motd
         let date = getDateInfo()
         let weather = Weather.GetWeather()
-        let trello = Trello.GetTrelloItems()
+        let trelloCol1,trelloCol2,trelloCol3 = Trello.GetTrelloItems()
         let cal = Calendar.GetCalendarInfo()
         let driveInfo = Drive.GetDriveInfo()
         let html = 
@@ -82,14 +82,16 @@ module Settings =
                 </div>
                 <div class='row center-box' style='margin-bottom: 10px'>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'>High Priority Items</div>
-                        <div class='card-container'>{trello}</div>
+                        <div class='big-box-section-header'>WCRI</div>
+                        <div class='card-container'>{trelloCol1}</div>
                     </div>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'></div>
+                        <div class='big-box-section-header'>Kero</div>
+                        <div class='card-container'>{trelloCol2}</div>
                     </div>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'></div>
+                        <div class='big-box-section-header'>DevTech</div>
+                        <div class='card-container'>{trelloCol3}</div>
                     </div>
                 </div>
                 <div class='row'>
