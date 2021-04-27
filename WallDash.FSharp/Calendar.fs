@@ -53,7 +53,8 @@ module Calendar =
                     |> function
                     | true -> "All Day", "", ""
                     | false -> event.StartDateAsString, event.Separator, event.EndDateAsString
-                $"<li style='border-left:2px solid {event.Color}'>{event.Title}<div class='event-time'>{st}{sep}{en}</div></li>"
+                let t = event.Title |> StringPipe.KeepStart 35
+                $"<li style='border-left:2px solid {event.Color}'>{t}<div class='event-time'>{st}{sep}{en}</div></li>"
                 )
                 |> String.concat ""
     
