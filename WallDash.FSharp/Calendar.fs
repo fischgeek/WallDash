@@ -1,6 +1,7 @@
 ﻿// fsharplint:disable Hints
 namespace WallDash.FSharp
 
+open JFSharp
 open System
 open FSharpGoogleCalendar
 open Google.Apis.Calendar.v3.Data
@@ -20,6 +21,9 @@ module Calendar =
         EndDateAsString: string
         Separator: string
     }
+    with 
+        static member IsAllDay (x: DashboardEvent) = x.AllDay
+        static member HasTitle (x: DashboardEvent) = x.Title |> SP.IsNotEmpty
 
     let private getCalendarColor calId = 
         let bg,fg = GoogleCalendar.GetCalendarColor calId
@@ -68,7 +72,7 @@ module Calendar =
             DateTime.Parse(eventDateTime.Date)
 
     let private getStringDate (eventDateTime: EventDateTime) = 
-        if isNull eventDateTime.Date then 
+        if isNull eventDateTime.Date then
             eventDateTime.DateTime.HasValue
             |> function
             | true -> eventDateTime.DateTime.Value.ToString("h:mm")
@@ -78,58 +82,71 @@ module Calendar =
 
     let private getStringTimeRange (startDate, endDate) = 
         $"{getStringDate startDate} {getStringDate endDate}"
-
     let private cleanAndFlatten (eventsWithColor: (string * Event list option) list) = 
         eventsWithColor
-        |> Seq.map (fun (clr,evtOp) -> 
+        |> List.collect (fun (clr,evtOp) -> 
             evtOp
-            |> function
-            | Some eList -> 
-                eList
-                |> Seq.map (fun evt -> 
-                    let allDay = if getStringDate evt.Start = "All Day" then true else false
-                    {
-                        Title = evt.Summary
-                        Color = clr
-                        AllDay = allDay
-                        StartDate = getRealDate evt.Start
-                        EndDate = getRealDate evt.End
-                        StartDateAsString = getStringDate evt.Start
-                        EndDateAsString = getStringDate evt.End
-                        Separator = "-"
-                    }
-                )
-            | None -> failwith "Event list was empty"
+            |> OP.NoneTo []
+            |> List.map (fun evt -> 
+                let allDay = if getStringDate evt.Start = "All Day" then true else false
+                {
+                    Title = evt.Summary
+                    Color = clr
+                    AllDay = allDay
+                    StartDate = getRealDate evt.Start
+                    EndDate = getRealDate evt.End
+                    StartDateAsString = getStringDate evt.Start
+                    EndDateAsString = getStringDate evt.End
+                    Separator = "-"
+                }
+            )
         )
-        |> Seq.concat
-        |> Seq.toList
+        
+    let private cleanAndFlattenx =
+        List.collect (fun (clr, evtOp) -> 
+            evtOp
+            |> OP.NoneTo []
+            |> List.map (fun (evt: Event) -> 
+                let allDay = if getStringDate evt.Start = "All Day" then true else false
+                {
+                    Title = evt.Summary
+                    Color = clr
+                    AllDay = allDay
+                    StartDate = getRealDate evt.Start
+                    EndDate = getRealDate evt.End
+                    StartDateAsString = getStringDate evt.Start
+                    EndDateAsString = getStringDate evt.End
+                    Separator = "-"
+                }
+            )
+        )
+    
 
     let private collectEvents (dateTime: DateTime) (events: DashboardEvent list) = 
-        let today = dateTime.Date
+        let d = dateTime.Date
         let allDayEvents = 
             events 
-            |> Seq.filter (fun ev -> ev.AllDay)
-            |> Seq.filter (fun ev -> ev.StartDate.Date = today)
-            |> Seq.toList
+            |? DashboardEvent.IsAllDay
+            |? DashboardEvent.HasTitle
+            |? fun ev -> ev.StartDate.Date = d
         
         let eventsToday = 
             events
-            |> Seq.filter (fun ev -> not ev.AllDay)
-            |> Seq.filter (fun ev -> ev.StartDate.Date = today)
+            |?! DashboardEvent.IsAllDay
+            |? (fun ev -> ev.StartDate.Date = d)
             |> Seq.sortBy (fun ev -> ev.StartDate.Date)
-            |> Seq.toList
 
-        let allEvents = allDayEvents @ eventsToday
-        allEvents
+        allDayEvents |> Seq.append eventsToday |> Seq.toList
 
     let GetCalendarInfo() =
+        let addDay (x: int) (dt: DateTime) = float x |> dt.AddDays 
         printf "\tGetting Calendar events..."
         let events = GetCalendarEvents() |> Seq.toList
         let dt = DateTime.Now
         let cleaned = events |> cleanAndFlatten
         let todaysEvents = cleaned |> collectEvents dt |> formatEventListForDisplay
         let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay
-        let nextEvents = cleaned |> collectEvents (dt.AddDays(2.)) |> formatEventListForDisplay
+        let nextEvents = cleaned |> collectEvents (dt |> addDay 2) |> formatEventListForDisplay
         let nextDay = dt.AddDays(2.).ToString("dddd")
         let calendarDiv = 
              $"<div class='calendar'>
