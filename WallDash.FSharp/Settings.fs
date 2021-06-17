@@ -100,10 +100,8 @@ module Settings =
                         {cal}
                     </div>
                     <div class='col-md-auto' style='width:150px'>
-                        {dropboxInfo}
-                    </div>
-                    <div class='col-md-auto' style='width:150px'>
                         {driveInfo}
+                        {dropboxInfo}
                     </div>
                 </div>
                 <div id='timestamp'>{DateTimePipe.StampString()}</div>
