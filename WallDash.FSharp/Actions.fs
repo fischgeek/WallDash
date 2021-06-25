@@ -1,6 +1,7 @@
 namespace WallDash.FSharp
 
 open JFSharp.Pipes
+open JFSharp.WebCalls
 open System
 open System.Diagnostics
 open System.Timers

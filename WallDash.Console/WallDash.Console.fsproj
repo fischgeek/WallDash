@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <!--<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -15,11 +15,11 @@
   <ItemGroup>
     <ProjectReference Include="..\WallDash.FSharp\WallDash.FSharp.fsproj" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <ItemGroup>
       <FSharpCoreResourcesFiles Include="$(OutputPath)**\FSharp.Core.resources.dll" />
       <FSharpCoreResourcesDirs Include="@(FSharpCoreResourcesFiles->'\%(Directory)') " />
     </ItemGroup>
     <RemoveDir Directories="@(FSharpCoreResourcesDirs)" />
-  </Target>
+  </Target>-->
 </Project>
