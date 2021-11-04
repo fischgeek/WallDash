@@ -99,7 +99,7 @@ module Settings =
                     <div class='col-sm'>
                         {cal}
                     </div>
-                    <div class='col-md-auto' style='width:150px'>
+                    <div class='col-md-auto'>
                         {driveInfo}
                         {dropboxInfo}
                     </div>

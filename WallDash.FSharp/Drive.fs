@@ -36,26 +36,40 @@ module Drive =
     let getSizeTuple (sizeValue: int64) = (getGbValue sizeValue, getTbValue sizeValue)
 
     let calculateDriveSpace (drive: DriveInfo) =
-        let name = drive.Name.Replace(@":\", "")
-        let totalSizeInGB,totalSizeInTB = getSizeTuple drive.TotalSize
-        let freeSpaceInGB,freeSpaceInTB = getSizeTuple drive.TotalFreeSpace
-        let usedSpace = totalSizeInGB - freeSpaceInGB
-        let displayTotalSize = 
-            if totalSizeInTB >= 1M
-            then $"{Math.Round(totalSizeInTB,1)}TB" 
-            else $"{Math.Round(totalSizeInGB,0)}GB"
-        let displayFree = 
-            if freeSpaceInTB >= 1M
-            then $"{Math.Round(freeSpaceInTB,1)}TB"
-            else $"{Math.Round(freeSpaceInGB,0)}GB"
+        try
+            let name = drive.Name.Replace(@":\", "")
+            let totalSizeInGB,totalSizeInTB = getSizeTuple drive.TotalSize
+            let freeSpaceInGB,freeSpaceInTB = getSizeTuple drive.TotalFreeSpace
+            let usedSpace = totalSizeInGB - freeSpaceInGB
+            let displayTotalSize = 
+                if totalSizeInTB >= 1M
+                then $"{Math.Round(totalSizeInTB,1)}TB" 
+                else $"{Math.Round(totalSizeInGB,0)}GB"
+            let displayFree = 
+                if freeSpaceInTB >= 1M
+                then $"{Math.Round(freeSpaceInTB,1)}TB"
+                else $"{Math.Round(freeSpaceInGB,0)}GB"
 
-        let usedSpaceDiff = usedSpace / totalSizeInGB
-        let usedPercentage = Math.Round(usedSpaceDiff * 100M, 0)
-        let color =
-            if usedPercentage >=< (0M, 50M) then "green"
-            elif usedPercentage >=< (51M, 75M) then "orange"
-            elif usedPercentage >=< (76M, 100M) then "red"
-            else "blue"
+            let usedSpaceDiff = usedSpace / totalSizeInGB
+            let usedPercentage = Math.Round(usedSpaceDiff * 100M, 0)
+            let color =
+                if usedPercentage >=< (0M, 50M) then "green"
+                elif usedPercentage >=< (51M, 75M) then "orange"
+                elif usedPercentage >=< (76M, 100M) then "red"
+                else "blue"
+            { 
+                Name = name
+                FreeSpace = freeSpaceInGB
+                TotalSpaceGB = totalSizeInGB
+                TotalSpaceTB = totalSizeInTB
+                DisplayTotalSpace = displayTotalSize
+                DisplayFreeSpace = displayFree
+                UsedSpace = usedSpace
+                PercentUsed = usedPercentage
+                Color = color }
+        with ex -> 
+            let zerod = 0 |> Decimal
+            {Name = "ERR";TotalSpaceGB = zerod;TotalSpaceTB = zerod;DisplayTotalSpace = "";DisplayFreeSpace = "";FreeSpace = zerod;UsedSpace = zerod;PercentUsed = zerod;Color = "red"}
 
         //printfn $"Drive {name}"
         //printfn $" TotalSpaceGB {totalSizeInGB}"
@@ -65,28 +79,20 @@ module Drive =
         //printfn $" Percentage {usedPercentage}"
         //printfn $" Color {color}"
 
-        { Name = name
-          FreeSpace = freeSpaceInGB
-          TotalSpaceGB = totalSizeInGB
-          TotalSpaceTB = totalSizeInTB
-          DisplayTotalSpace = displayTotalSize
-          DisplayFreeSpace = displayFree
-          UsedSpace = usedSpace
-          PercentUsed = usedPercentage
-          Color = color }
+        
 
     let private getSpecificDriveInfo (labelLetters: string []) =
-        DriveInfo.GetDrives()
+        let drives = DriveInfo.GetDrives()
+        drives
         |> Seq.map
             (fun d ->
                 labelLetters
                 |> Seq.map
-                    (fun l ->
+                    (fun l -> 
                         if d.Name = $"{l}:\\" then
-                            Some d
-                        else
-                            None)
-                |> Seq.toList)
+                            Some d 
+                        else None)
+                    |> Seq.toList)
         |> Seq.toList
         |> Seq.concat
         |> OptionPipe.UnwrapSomes
@@ -99,7 +105,7 @@ module Drive =
         |> Seq.map
             (fun x -> 
                 $"
-                    <div id='{x.Name}-drive' data-percent='{x.PercentUsed}' data-text='{x.Name}' data-animate='false' class='{x.Color} medium circle'>
+                    <div id='{x.Name}-drive' data-percent='{x.PercentUsed}' data-text='{x.Name}' data-animate='false' class='{x.Color} medium circle float-end'>
                         <span class='drive-space'>{x.DisplayFreeSpace}</span>
                     </div>
                 ")

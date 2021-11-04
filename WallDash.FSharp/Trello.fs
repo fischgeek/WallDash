@@ -26,6 +26,7 @@ module Trello =
            $"border-left: 2px solid {y}"
         let trelloHtml1 =
             cards
+            |> Seq.filter (fun c -> not c.Labels.IsEmpty)
             |> Seq.filter (fun c -> c.Labels.Head.Name.ToLower() = "wcri")
             |> Seq.map (fun c -> 
                 let desc = c.Desc |> StringPipe.KeepStart 50
@@ -36,6 +37,7 @@ module Trello =
             |> String.concat ""
         let trelloHtml2 =
             cards
+            |> Seq.filter (fun c -> not c.Labels.IsEmpty)
             |> Seq.filter (fun c -> c.Labels.Head.Name.ToLower() = "kero")
             |> Seq.map (fun c -> 
                 let desc = c.Desc |> StringPipe.KeepStart 50
@@ -46,6 +48,7 @@ module Trello =
             |> String.concat ""
         let trelloHtml3 =
             cards
+            |> Seq.filter (fun c -> not c.Labels.IsEmpty)
             |> Seq.filter (fun c -> c.Labels.Head.Name.ToLower() = "devtech")
             |> Seq.map (fun c -> 
                 let desc = c.Desc |> StringPipe.KeepStart 50
