@@ -65,8 +65,10 @@ module Settings =
 
     let private getDateInfo() = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.DayOfWeek.ToString()) (DateTime.Now.ToString("MMMM d, yyyy"))
 
-    let GetBodyHtml motd : string =
-        let greeting = formatGreeting motd
+    let GetBodyHtml stamp : string =
+        //let motd = MOTD.GetVerseOfTheDay stamp 
+        //let motd = MOTD.GetRandomQuote stamp // getQuote()
+        let greeting = formatGreeting (MOTD.GetRandomQuote stamp)
         let date = getDateInfo()
         let weather = Weather.GetWeather()
         let trelloCol1,trelloCol2,trelloCol3 = Trello.GetTrelloItems()

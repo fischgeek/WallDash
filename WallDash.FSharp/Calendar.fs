@@ -7,6 +7,7 @@ open FSharpGoogleCalendar
 open Google.Apis.Calendar.v3.Data
 open WallDash.FSharp.SettingsTypes
 open  JFSharp.Pipes
+open System.IO
 
 module Calendar = 
     let cfg = LoadConfig()
@@ -82,6 +83,7 @@ module Calendar =
 
     let private getStringTimeRange (startDate, endDate) = 
         $"{getStringDate startDate} {getStringDate endDate}"
+    
     let private cleanAndFlatten (eventsWithColor: (string * Event list option) list) = 
         eventsWithColor
         |> List.collect (fun (clr,evtOp) -> 
@@ -138,21 +140,35 @@ module Calendar =
 
         allDayEvents |> Seq.append eventsToday |> Seq.toList
 
+    let private shouldGetCalInfo() = 
+        let now = DateTime.Now
+        let calFile = cfg.CacheFiles.Calendar |> FileInfo
+        let diff = now - calFile.LastWriteTime
+        if diff.TotalMinutes >= 15.0 then 
+            File.Delete calFile.FullName
+            true 
+        else false
+
     let GetCalendarInfo() =
         let addDay (x: int) (dt: DateTime) = float x |> dt.AddDays 
         printf "\tGetting Calendar events..."
-        let events = GetCalendarEvents() |> Seq.toList
-        let dt = DateTime.Now
-        let cleaned = events |> cleanAndFlatten
-        let todaysEvents = cleaned |> collectEvents dt |> formatEventListForDisplay
-        let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay
-        let nextEvents = cleaned |> collectEvents (dt |> addDay 2) |> formatEventListForDisplay
-        let nextDay = dt.AddDays(2.).ToString("dddd")
         let calendarDiv = 
-             $"<div class='calendar'>
-                <h1>Today</h1><ul class='calendar-list'>{todaysEvents}</ul>
-                <h1>Tomorrow</h1><ul class='calendar-list'>{tomorrowsEvents}</ul>
-                <h1>{nextDay}</h1><ul class='calendar-list'>{nextEvents}</ul>
-               </div>"
+            if shouldGetCalInfo() then
+                let events = GetCalendarEvents() |> Seq.toList
+                let dt = DateTime.Now
+                let cleaned = events |> cleanAndFlatten
+                let todaysEvents = cleaned |> collectEvents dt |> formatEventListForDisplay
+                let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay
+                let nextEvents = cleaned |> collectEvents (dt |> addDay 2) |> formatEventListForDisplay
+                let nextDay = dt.AddDays(2.).ToString("dddd")
+                let calHtml = 
+                    $"<div class='calendar'>
+                        <h1>Today</h1><ul class='calendar-list'>{todaysEvents}</ul>
+                        <h1>Tomorrow</h1><ul class='calendar-list'>{tomorrowsEvents}</ul>
+                        <h1>{nextDay}</h1><ul class='calendar-list'>{nextEvents}</ul>
+                    </div>"
+                File.WriteAllText(cfg.CacheFiles.Calendar, calHtml)
+                calHtml
+            else File.ReadAllText(cfg.CacheFiles.Calendar)
         printfn "Done."
         calendarDiv

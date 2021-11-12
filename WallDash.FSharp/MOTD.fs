@@ -33,20 +33,25 @@ module MOTD =
         let startOptions = 
             let chromeOpts = ChromeOptions ()
             //chromeOpts.BinaryLocation <- @"c:\dev\chromedriver\chromedriver.exe"
-            chromeOpts.AddArgument "--headless"
+            //chromeOpts.AddArgument "--headless"
             chromeOpts.BrowserVersion <- "95.0.4638.54"
             chromeOpts.AddArgument "start-maximized"
             let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
             chromeOpts.AddArgument $"user-agent={userAgent}"
+            //chromeOpts.AddArgument "--log-level=3"
             canopy.types.BrowserStartMode.ChromeWithOptions chromeOpts
         start startOptions
         Console.Clear()
+        //let _url = "https://www.merriam-webster.com/word-of-the-day/calendar"
+        let _url = "https://www.dictionary.com/e/word-of-the-day/"
         printfn $"[{stamp}] Fetching new data..."
-        printf "\tGetting new WOD..."
-        url "https://www.merriam-webster.com/word-of-the-day"
-        let v = element "div.word-and-pronunciation h1"
-        let r = element "div.wod-definition-container p"
-        printfn $"{v.Text} - {r.Text}"
+        printf $"\tGetting Word of the Day..."
+        url _url
+        //let v = element "h2.wod-l-hover"
+        //let r = element "div.definition-block p"
+        let v = element "div.otd-item-headword__word h1"
+        let r = element "div.otd-item-headword__pos p:nth-child(2)"
+        //printfn $"{v.Text} - {r.Text}"
         let o = {| Verse = v.Text; Ref = r.Text |}
         quit()
         printfn "Done."

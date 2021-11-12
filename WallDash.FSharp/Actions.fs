@@ -7,6 +7,7 @@ open System.Diagnostics
 open System.Timers
 open System.IO
 open System.Reflection
+open TrelloConnect
 
 module Actions =
     let cfg = SettingsTypes.LoadConfig()
@@ -50,18 +51,16 @@ module Actions =
     let DoWallDashStuff() = 
         let stamp = DateTime.Now.ToLongTimeString()
         printfn $"[{stamp}] Fetching new data..."
-        //let motd = MOTD.GetVerseOfTheDay stamp 
-        //let motd = MOTD.GetRandomQuote stamp // getQuote()
-        let motd = MOTD.GetWordOfTheDay stamp
         let headHtml = File.ReadAllText providedHeadHtml
         let endingBody = File.ReadAllText providedEndingBody
-        let bodyHtml = Settings.GetBodyHtml motd
+        let bodyHtml = Settings.GetBodyHtml stamp
 
         printf "\tRendering HTML..."
         let source = $"<!DOCTYPE html><html>{headHtml}<body>{bodyHtml}{endingBody}</body></html>"
         File.WriteAllText(cfg.OutputHtmlFile, source)
         Cleanup source
         let savedImage = HtmlToImage cfg.OutputHtmlFile (1920, 1080)
+        JFSharp.Utils.SecondSleep 5
         Wallpaper.Set savedImage None |> ignore
         printfn "Done."
         let stamp = DateTime.Now.ToLongTimeString()
@@ -70,15 +69,15 @@ module Actions =
     let StartWallDash() = 
         InitWallDash()
         DoWallDashStuff()
-        let timer = new Timers.Timer(300000.)
-        let timerEvent = Async.AwaitEvent (timer.Elapsed) |> Async.Ignore
-        timer.Start()
-        let mutable shouldRun = true
-        while shouldRun do
-            shouldRun <- DateTime.Now.Hour > 6 && DateTime.Now.Hour < 23 
-            Async.RunSynchronously timerEvent
-            printfn "%A" DateTime.Now
-            DoWallDashStuff()
+        //let timer = new Timers.Timer(300000.)
+        //let timerEvent = Async.AwaitEvent (timer.Elapsed) |> Async.Ignore
+        //timer.Start()
+        //let mutable shouldRun = true
+        //while shouldRun do
+        //    shouldRun <- DateTime.Now.Hour > 6 && DateTime.Now.Hour < 23 
+        //    Async.RunSynchronously timerEvent
+        //    printfn "%A" DateTime.Now
+        //    DoWallDashStuff()
 
     let getMonitorDimensions = Settings.MonitorSize
 

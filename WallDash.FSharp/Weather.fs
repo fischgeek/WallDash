@@ -3,6 +3,7 @@
 open System
 open JFSharp.Pipes
 open WallDash.FSharp.SettingsTypes
+open System.IO
 
 module Weather = 
     let cfg = LoadConfig()
@@ -64,15 +65,16 @@ module Weather =
 
     let private shouldGetWeather() = 
         let now = DateTime.Now
-        let diff = now - lastWeatherCheckTime
-        //printfn "It has been %f seconds since the last weather check." diff.TotalSeconds
-        lastWeatherCheckTime <- now
-        diff.TotalSeconds >= 300.0
+        let weatherFile = cfg.CacheFiles.Weather |> FileInfo
+        let diff = now - weatherFile.LastWriteTime
+        if diff.TotalMinutes >= 15.0 then 
+            File.Delete weatherFile.FullName
+            true 
+        else false
 
     let private getWeather(source: WeatherProvider): string =
         let weatherHtml =
             if shouldGetWeather() then
-                printf "\tGetting Weather data from %s..." (source.ToString())
                 let weatherData =
                     source
                     |> function
@@ -102,17 +104,14 @@ module Weather =
                                LowHigh = formatLowHigh x.Temperature x.Temperature
                             |}
                         )
-
                 let outString = 
                     sprintf
                         "<div class='weather header'><span><img src='%s' /></span><span class='header'>%s&deg;</span></div><div class='weather-highlow'>%s</div>"
                         weatherData.IconUrl weatherData.Temp weatherData.LowHigh
-                weatherHtml <- outString
-                weatherHtml
+                File.WriteAllText(cfg.CacheFiles.Weather, outString)
+                outString
             else 
-                //printfn "\tSkipping weather check."
-                weatherHtml
-        printfn "Done."
+                File.ReadAllText(cfg.CacheFiles.Weather)
         weatherHtml
 
     let private customIcon(icon: string) =
@@ -121,5 +120,9 @@ module Weather =
         | "01d" -> "sun.png"
         | _ -> ""
 
-    let GetWeather() = getWeather(GetWeatherProvider cfg)
+    let GetWeather() = 
+        printf "\tGetting Weather data from %s..." (cfg.DesiredWeatherSource)
+        let w = getWeather(GetWeatherProvider cfg)
+        printfn "Done."
+        w
 
