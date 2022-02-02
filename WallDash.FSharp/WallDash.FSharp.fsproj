@@ -88,7 +88,7 @@
       <HintPath>..\packages\FSharp.Core.5.0.0\lib\netstandard2.0\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\packages\FSharp.Data.4.2.4\lib\netstandard2.0\FSharp.Data.dll</HintPath>
+      <HintPath>..\packages\FSharp.Data.4.2.5\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.49.0\lib\net45\Google.Apis.dll</HintPath>
