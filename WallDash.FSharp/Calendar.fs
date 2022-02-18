@@ -123,7 +123,6 @@ module Calendar =
             )
         )
     
-
     let private collectEvents (dateTime: DateTime) (events: DashboardEvent list) = 
         let d = dateTime.Date
         let allDayEvents = 
