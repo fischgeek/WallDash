@@ -7,8 +7,8 @@ open System.IO
 
 module Weather = 
     let cfg = LoadConfig()
-    let private weaterhBitApi = cfg.WeatherBitApiKey
-    let private openWeatherApi = cfg.OpenWeatherApiKey
+    let private weatherBitKey = cfg.WeatherBit.ApiKey
+    let private openWeatherApi = cfg.OpenWeather.ApiKey
     let private lat = cfg.Lat
     let private lon = cfg.Lon
     let private latLong = sprintf "lat=%s&lon=%s" lat lon
@@ -17,11 +17,11 @@ module Weather =
     let private openWeatherIconUrl iconCode = sprintf "http://openweathermap.org/img/wn/%s@2x.png" iconCode
 
     let private weatherBitBase = "https://api.weatherbit.io/v2.0"
-    let private weatherBitForecastCall = sprintf "%s/forecast/daily?%s&units=i&key=%s" weatherBitBase latLong weaterhBitApi
-    let private weatherBitCurrentCall = sprintf "%s/current?&%s&units=i&key=%s" weatherBitBase latLong weaterhBitApi
+    let private weatherBitForecastCall = sprintf "%s/forecast/daily?%s&units=i&key=%s" weatherBitBase latLong weatherBitKey
+    let private weatherBitCurrentCall = sprintf "%s/current?&%s&units=i&key=%s" weatherBitBase latLong weatherBitKey
     let private weatherBitIconUrl iconCode = sprintf "https://www.weatherbit.io/static/img/icons/%s.png" iconCode
     
-    let private tomorrowioCall = $"https://api.tomorrow.io/v4/timelines?location={lat},{lon}&timesteps=current&fields=temperature,weatherCode&units=imperial&timezone={cfg.TomorrowIoTimeZone}&apikey={cfg.TomorrowIoApiKey}"
+    let private tomorrowioCall = $"https://api.tomorrow.io/v4/timelines?location={lat},{lon}&timesteps=current&fields=temperature,weatherCode&units=imperial&timezone={cfg.TomorrowIo.TimeZone}&apikey={cfg.TomorrowIo.ApiKey}"
     let private tomorrowIoIconUrl = "https://raw.githubusercontent.com/Tomorrow-IO-API/tomorrow-weather-codes/d53e9d2ffc4d7e182f91d8fda333b189aaea7a13/color"
     let private tomorrowIoIcon code = 
         match code with
@@ -49,6 +49,8 @@ module Weather =
         | 1100 -> $"{tomorrowIoIconUrl}/mostly_clear_day.svg"
         | 1000 -> $"{tomorrowIoIconUrl}/clear_day.svg"
         | _ -> $"{tomorrowIoIconUrl}/clear_day"
+
+    let private weatherApiCall = $"https://api.weatherapi.com/v1/forecast.json?key={cfg.WeatherApi.ApiKey}&q={cfg.WeatherApi.Zip}&days=1&aqi=no&alerts=no"
 
     let mutable private lastWeatherCheckTime = DateTime.Now.AddHours -1.0
     let mutable private weatherHtml = ""
@@ -104,6 +106,17 @@ module Weather =
                                LowHigh = formatLowHigh x.Temperature x.Temperature
                             |}
                         )
+                    | WeatherApi -> 
+                        let largeIcon (url: string) =  url.Replace("64x64", "128x128")
+                        WebPipe.QuickGet weatherApiCall
+                        |> (fun x -> x)
+                        |> WeatherApi.Parse
+                        |> (fun w ->
+                            {| Temp = (w.Current.TempF |> DecimalPipe.RoundZero).ToString()
+                               IconUrl = $"https:{w.Current.Condition.Icon}" |> largeIcon
+                               LowHigh = formatLowHigh w.Forecast.Forecastday.[0].Day.MintempF w.Forecast.Forecastday.[0].Day.MaxtempF
+                            |}
+                        )
                 let outString = 
                     sprintf
                         "<div class='weather header'><span><img src='%s' /></span><span class='header'>%s&deg;</span></div><div class='weather-highlow'>%s</div>"
@@ -121,8 +134,9 @@ module Weather =
         | _ -> ""
 
     let GetWeather() = 
-        printf "\tGetting Weather data from %s..." (cfg.DesiredWeatherSource)
+        printf "\tGetting Weather data from %s..." (cfg.Weather.Source)
         let w = getWeather(GetWeatherProvider cfg)
         printfn "Done."
         w
+
 

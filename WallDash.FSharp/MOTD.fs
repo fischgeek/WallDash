@@ -16,7 +16,7 @@ module MOTD =
         Google.GetDriver driver
         let startOptions = 
             let chromeOpts = ChromeOptions ()
-            //chromeOpts.AddArgument "--headless"
+            chromeOpts.AddArgument "--headless"
             chromeOpts.AddArgument "start-maximized"
             let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
             chromeOpts.AddArgument $"user-agent={userAgent}"
