@@ -10,7 +10,7 @@ open WallDash.FSharp.SettingsTypes
 module Settings =
     let cfg : Config.Config = LoadConfig()
     let GoogleCalendarCredentials = @"c:\dev\config\google-calendar-credentials.json"
-    let ChromeExe = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+    let ChromeExe = @"C:\Program Files\Google\Chrome\Application\chrome.exe"
     let a = System.Configuration.ConfigurationManager.AppSettings
 
     let private calendar2 = a.["Calendar2"]
@@ -65,10 +65,16 @@ module Settings =
 
     let private getDateInfo() = sprintf "<div class='header'>%s</div><div>%s</div>" (DateTime.Now.DayOfWeek.ToString()) (DateTime.Now.ToString("MMMM d, yyyy"))
 
-    let GetBodyHtml stamp : string =
+    let GetBodyHtml (cfg: Config.Config) stamp : string =
         //let motd = MOTD.GetVerseOfTheDay stamp 
         //let motd = MOTD.GetRandomQuote stamp // getQuote()
-        let greeting = formatGreeting (MOTD.GetRandomQuote stamp)
+        let greeting = 
+            match cfg.Motd.Mode with
+            | "VerseOfTheDay" -> MOTD.GetVerseOfTheDay stamp
+            | "RandomQuote" -> MOTD.GetRandomQuote stamp
+            | "WordOfTheDay" -> MOTD.GetWordOfTheDay cfg stamp
+            | _ -> "Greetings, Earthling."
+            |> formatGreeting
         let date = getDateInfo()
         let weather = Weather.GetWeather()
         let trelloCol1,trelloCol2,trelloCol3 = Trello.GetTrelloItems()

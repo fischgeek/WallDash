@@ -8,6 +8,7 @@ open System.Timers
 open System.IO
 open System.Reflection
 open TrelloConnect
+open JFSharp
 
 module Actions =
     let cfg = SettingsTypes.LoadConfig()
@@ -53,7 +54,7 @@ module Actions =
         printfn $"[{stamp}] Fetching new data..."
         let headHtml = File.ReadAllText providedHeadHtml
         let endingBody = File.ReadAllText providedEndingBody
-        let bodyHtml = Settings.GetBodyHtml stamp
+        let bodyHtml = Settings.GetBodyHtml cfg stamp
 
         printf "\tRendering HTML..."
         let source = $"<!DOCTYPE html><html>{headHtml}<body>{bodyHtml}{endingBody}</body></html>"
@@ -67,6 +68,9 @@ module Actions =
         printfn $"[{stamp}] Done."
 
     let StartWallDash() = 
+
+        
+
         InitWallDash()
         DoWallDashStuff()
         //let timer = new Timers.Timer(300000.)

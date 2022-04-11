@@ -6,17 +6,25 @@ open canopy.configuration
 open canopy.classic
 open OpenQA.Selenium
 open OpenQA.Selenium.Chrome
+open JFSharp
 
 module MOTD = 
-    let private fetchVotd stamp = 
+    open SettingsTypes
+    let private getChromeOptions() = 
+        let driver = 
+            Path.Combine(Environment.CurrentDirectory, "chromedriver.exe") |> FileInfo
+        Google.GetDriver driver
         let startOptions = 
             let chromeOpts = ChromeOptions ()
-            chromeOpts.AddArgument "--headless"
+            //chromeOpts.AddArgument "--headless"
             chromeOpts.AddArgument "start-maximized"
             let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
             chromeOpts.AddArgument $"user-agent={userAgent}"
             canopy.types.BrowserStartMode.ChromeWithOptions chromeOpts
-        start startOptions
+        startOptions
+
+    let private fetchVotd stamp = 
+        start (getChromeOptions())
         Console.Clear()
         printfn $"[{stamp}] Fetching new data..."
         printf "\tGetting new VOTD..."
@@ -29,30 +37,28 @@ module MOTD =
         printfn "Done."
         o
 
-    let private fetchWod stamp = 
-        let startOptions = 
-            let chromeOpts = ChromeOptions ()
-            //chromeOpts.BinaryLocation <- @"c:\dev\chromedriver\chromedriver.exe"
-            //chromeOpts.AddArgument "--headless"
-            chromeOpts.BrowserVersion <- "95.0.4638.54"
-            chromeOpts.AddArgument "start-maximized"
-            let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
-            chromeOpts.AddArgument $"user-agent={userAgent}"
-            //chromeOpts.AddArgument "--log-level=3"
-            canopy.types.BrowserStartMode.ChromeWithOptions chromeOpts
-        start startOptions
+    let private fetchWod (cfg: Config.Config) stamp = 
+        start (getChromeOptions())
         Console.Clear()
-        //let _url = "https://www.merriam-webster.com/word-of-the-day/calendar"
-        let _url = "https://www.dictionary.com/e/word-of-the-day/"
+
         printfn $"[{stamp}] Fetching new data..."
         printf $"\tGetting Word of the Day..."
-        url _url
-        //let v = element "h2.wod-l-hover"
-        //let r = element "div.definition-block p"
-        let v = element "div.otd-item-headword__word h1"
-        let r = element "div.otd-item-headword__pos p:nth-child(2)"
-        //printfn $"{v.Text} - {r.Text}"
-        let o = {| Verse = v.Text; Ref = r.Text |}
+        let o =
+            match cfg.Motd.WordOfTheDaySource with
+            | "merriam-webster" ->
+                let _url = "https://www.merriam-webster.com/word-of-the-day/calendar"
+                url _url
+                let vv = elements ".word-and-pronunciation a h2"
+                let v = (vv.[1]).Text
+                let rr = elements "div.definition-block p"
+                let r = rr.[1].Text
+                {| Verse = v; Ref = r |}
+            | _ -> 
+                let _url = "https://www.dictionary.com/e/word-of-the-day/"
+                url _url
+                let v = (element "div.otd-item-headword__word h1").Text
+                let r = (element "div.otd-item-headword__pos p:nth-child(2)").Text
+                {| Verse = v; Ref = r |}
         quit()
         printfn "Done."
         o
@@ -76,7 +82,7 @@ module MOTD =
             File.WriteAllText(votdFile, votd)
             votd
 
-    let GetWordOfTheDay stamp = 
+    let GetWordOfTheDay cfg stamp = 
         let wodFile = @"c:\dev\temp\walldash\wod.txt"
         if File.Exists wodFile then
             let fi = FileInfo(wodFile)
@@ -84,13 +90,13 @@ module MOTD =
                 File.ReadAllText(wodFile)
             else
                 let votd = 
-                    let v = fetchWod stamp
+                    let v = fetchWod cfg stamp
                     $"{v.Verse}<br />{v.Ref}"
                 File.WriteAllText(wodFile, votd)
                 votd
         else
             let votd = 
-                let v = fetchWod stamp
+                let v = fetchWod cfg stamp
                 $"{v.Verse}<br />{v.Ref}"
             File.WriteAllText(wodFile, votd)
             votd
