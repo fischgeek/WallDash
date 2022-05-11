@@ -11,12 +11,12 @@ open JFSharp
 module MOTD = 
     open SettingsTypes
     let private getChromeOptions() = 
-        let driver = 
-            Path.Combine(Environment.CurrentDirectory, "chromedriver.exe") |> FileInfo
+        let driver = Path.Combine(Environment.CurrentDirectory, "chromedriver.exe") |> FileInfo
         Google.GetDriver driver
         let startOptions = 
             let chromeOpts = ChromeOptions ()
             chromeOpts.AddArgument "--headless"
+            chromeOpts.AddArgument "--log-level=3"
             chromeOpts.AddArgument "start-maximized"
             let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
             chromeOpts.AddArgument $"user-agent={userAgent}"

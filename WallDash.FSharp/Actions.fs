@@ -9,6 +9,7 @@ open System.IO
 open System.Reflection
 open TrelloConnect
 open JFSharp
+open Dropbox.Api.Sharing
 
 module Actions =
     let cfg = SettingsTypes.LoadConfig()
