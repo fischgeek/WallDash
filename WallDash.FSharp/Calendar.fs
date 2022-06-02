@@ -27,7 +27,11 @@ module Calendar =
         static member HasTitle (x: DashboardEvent) = x.Title |> SP.IsNotEmpty
 
     let private getCalendarColor calId = 
-        let bg,fg = GoogleCalendar.GetCalendarColor calId
+        let bg,fg = 
+            GoogleCalendar.GetCalendarColor calId
+            |> function
+            | Some (b,f) -> b,f
+            | None -> "blue",""
         bg
 
     let private getColorFromId colorId = 
@@ -41,7 +45,11 @@ module Calendar =
             |> Seq.map (fun cal -> 
                 let events = 
                     GoogleCalendar.GetEventList cal DateTime.Now (DateTime.Now.AddDays(14.))                    
-                let bg,fg = GoogleCalendar.GetCalendarColor cal
+                let bg,fg = 
+                    GoogleCalendar.GetCalendarColor cal
+                    |> function
+                    | Some (b,f) -> b,f
+                    | None -> "blue",""
                 bg,events
             )
         mappedEvents

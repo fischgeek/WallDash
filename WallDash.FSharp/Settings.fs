@@ -107,7 +107,7 @@ module Settings =
                     <div class='col-sm'>
                         {cal}
                     </div>
-                    <div class='col-md-auto'>
+                    <div id='drive-info' class='col-md-auto'>
                         {driveInfo}
                         {dropboxInfo}
                     </div>

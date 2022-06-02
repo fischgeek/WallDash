@@ -23,7 +23,7 @@ module Actions =
         DirectoryPipe.Create @"c:\dev\temp\walldash\html\css"
         FilePipe.CopyWithOverwrite $@"{path}\html\js\jquery.min.js" @"c:\dev\temp\walldash\html\js\jquery.min.js"
         FilePipe.CopyWithOverwrite $@"{path}\html\js\percircle.js" @"c:\dev\temp\walldash\html\js\percircle.js"
-        FilePipe.CopyWithOverwrite $@"{path}\html\css\percircle.css" @"c:\dev\temp\walldash\html\js\percircle.css"
+        FilePipe.CopyWithOverwrite $@"{path}\html\css\percircle.css" @"c:\dev\temp\walldash\html\css\percircle.css"
 
     let HtmlToImage html (dimensions: int*int) =
         let w,h = dimensions

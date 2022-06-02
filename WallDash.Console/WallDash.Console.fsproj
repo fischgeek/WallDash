@@ -9,6 +9,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Local|AnyCPU'">
     <OutputPath>C:\dev\released\Walldash\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\dev\released\Walldash\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="Program.fs" />

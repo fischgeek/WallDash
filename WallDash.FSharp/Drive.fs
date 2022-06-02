@@ -16,6 +16,7 @@ module Drive =
           TotalSpaceTB: decimal
           DisplayTotalSpace: string
           DisplayFreeSpace: string
+          DisplayUsedSpace: string
           FreeSpace: decimal
           UsedSpace: decimal
           PercentUsed: decimal
@@ -49,6 +50,11 @@ module Drive =
                 if freeSpaceInTB >= 1M
                 then $"{Math.Round(freeSpaceInTB,1)}TB"
                 else $"{Math.Round(freeSpaceInGB,0)}GB"
+            let displayUsed = 
+                if usedSpace >= 1000M
+                then $"{Math.Round((usedSpace/1000M),1)}TB"
+                else $"{Math.Round(usedSpace,0)}GB"
+                
 
             let usedSpaceDiff = usedSpace / totalSizeInGB
             let usedPercentage = Math.Round(usedSpaceDiff * 100M, 0)
@@ -64,12 +70,13 @@ module Drive =
                 TotalSpaceTB = totalSizeInTB
                 DisplayTotalSpace = displayTotalSize
                 DisplayFreeSpace = displayFree
+                DisplayUsedSpace = displayUsed
                 UsedSpace = usedSpace
                 PercentUsed = usedPercentage
                 Color = color }
         with ex -> 
             let zerod = 0 |> Decimal
-            {Name = "ERR";TotalSpaceGB = zerod;TotalSpaceTB = zerod;DisplayTotalSpace = "";DisplayFreeSpace = "";FreeSpace = zerod;UsedSpace = zerod;PercentUsed = zerod;Color = "red"}
+            {Name = "ERR";TotalSpaceGB = zerod;TotalSpaceTB = zerod;DisplayTotalSpace = "";DisplayFreeSpace = "";FreeSpace = zerod;UsedSpace = zerod;PercentUsed = zerod;Color = "red";DisplayUsedSpace = ""}
 
         //printfn $"Drive {name}"
         //printfn $" TotalSpaceGB {totalSizeInGB}"
@@ -106,7 +113,7 @@ module Drive =
             (fun x -> 
                 $"
                     <div id='{x.Name}-drive' data-percent='{x.PercentUsed}' data-text='{x.Name}' data-animate='false' class='{x.Color} medium circle float-end'>
-                        <span class='drive-space'>{x.DisplayFreeSpace}</span>
+                        <span class='drive-space'>{x.DisplayUsedSpace}</span>
                     </div>
                 ")
         |> String.concat ""
