@@ -4,3 +4,4 @@ Google.Apis
 Google.Apis.Auth
 Google.Apis.Core
 Google.Apis.Calendar.v3
+Newtonsoft.Json
