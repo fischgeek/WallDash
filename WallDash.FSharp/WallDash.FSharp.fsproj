@@ -83,10 +83,10 @@
     <Compile Include="Calendar.fs" />
     <Compile Include="Settings.fs" />
     <Compile Include="Actions.fs" />
-    <Content Include="packages.config" />
-    <Content Include="App.config" />
     <Compile Include="Forms.fs" />
+    <Content Include="App.config" />
     <None Include="paket.references" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="canopy">
