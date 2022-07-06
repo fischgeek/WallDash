@@ -8,128 +8,32 @@ open OpenQA.Selenium
 open OpenQA.Selenium.Chrome
 open JFSharp
 open System.Text.RegularExpressions
+open HtmlAgilityPack
+open JFSharp.Pipes
 
 module MOTD = 
     open SettingsTypes
-    let private getChromeOptions() = 
-        let driver = Path.Combine(Environment.CurrentDirectory, "chromedriver.exe") |> FileInfo
-        Google.GetDriver driver
-        let startOptions = 
-            let chromeOpts = ChromeOptions ()
-            chromeOpts.AddArgument "--headless"
-            chromeOpts.AddArgument "--log-level=3"
-            chromeOpts.AddArgument "start-maximized"
-            let userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.56 Safari/537.36"
-            chromeOpts.AddArgument $"user-agent={userAgent}"
-            canopy.types.BrowserStartMode.ChromeWithOptions chromeOpts
-        startOptions
+
+    let private getHtmlDoc (url: string) = (new HtmlWeb()).Load(url)
 
     let private fetchVotd stamp = 
-        start (getChromeOptions())
-        Console.Clear()
-        printfn $"[{stamp}] Fetching new data..."
-        printf "\tGetting new VOTD..."
-        url "https://bible.com/"
-        let v = element "p.votd-verse a"
-        let r = element "p.votd-ref a"
-        let o = {| Verse = v.Text; Ref = r.Text |}
-        quit()
-        printfn "Done."
-        o
-
-    let private fetchVotd2 stamp = 
         printf "\tGetting new Verse of the Day..."
-        let tempFile = "c:/dev/temp/walldash/bible.txt"
-        QuickDownload "https://bible.com/" tempFile
-        //let cc = 
-        //    File.ReadAllText tempFile
-        //    |> function
-        //    | Regex "<p class='votd-verse'>(.*?)</p>" [] -> ""
-        //    | _ -> "no match"
-        let c = File.ReadAllText tempFile
-        let verseText = 
-            Regex.Match(c, "<p class='votd-verse'>(.*?)</p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-            |> (fun m -> 
-                m.Success
-                |> function
-                | true -> 
-                    Regex.Match(m.Value, "(_self\">)(.*?)(<\/a>)", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-                    |> (fun x ->
-                        x.Success 
-                        |> function
-                        | true -> x.Groups.[2].Value
-                        | false -> "no match"
-                    )
-                | false -> "no match"
-            )        
-        let verseRef = 
-            Regex.Match(c, "<p class='votd-ref'>(.*?)</p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-            |> (fun m -> 
-                m.Success
-                |> function
-                | true ->
-                    Regex.Match(m.Value, "(_self\">)(.*?)(<\/a>)", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-                    |> (fun x -> 
-                        x.Success 
-                        |> function
-                        | true -> x.Groups.[2].Value
-                        | false -> "no match"
-                    )
-                | false -> "no match"
-            )
-        File.Delete tempFile
+        let doc = getHtmlDoc "https://bible.com/"
+        let verse = 
+            doc.DocumentNode.SelectSingleNode("//p[@class='votd-verse']").InnerText 
+            |> StringPipe.Trim 
+            |> StringPipe.RegexReplace "\s{2,}" " "
+        let verseRef = doc.DocumentNode.SelectSingleNode("//p[@class='votd-ref']").InnerText |> StringPipe.Trim
         printfn "Done."
-        {| Verse = verseText; Ref = verseRef |}
+        {| Verse = verse; Ref = verseRef |}
 
-    let private fetchWod2 (cfg: Config.Config) stamp =
+    let private fetchWod (cfg: Config.Config) stamp =
         printf $"\tGetting Word of the Day..."
-        let tempFile = "c:/dev/temp/walldash/webster.txt"
-        QuickDownload "https://www.merriam-webster.com/word-of-the-day/calendar" tempFile
-        let c = File.ReadAllText tempFile
-        let word = 
-            Regex.Match(c, "<h2 class=\"wod-l-hover\">(.*?)<\/h2>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-            |> (fun m -> 
-                m.Success
-                |> function
-                | true -> m.Groups.[1].Value
-                | false -> "no match"
-            )        
-        let def = 
-            Regex.Match(c, "\"definition-block\">.*?<p>(.*?)<\/p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
-            |> (fun m -> 
-                m.Success
-                |> function
-                | true -> m.Groups.[1].Value
-                | false -> "no match"
-            )
-        File.Delete tempFile
+        let doc = getHtmlDoc "https://www.merriam-webster.com/word-of-the-day/calendar"
+        let word = doc.DocumentNode.SelectSingleNode("//h2[@class='wod-l-hover']").InnerText
+        let def = doc.DocumentNode.SelectSingleNode("//div[@class='definition-block']/p").InnerText
         printfn "Done."
         {| Verse = word; Ref = def |}
-
-    let private fetchWod (cfg: Config.Config) stamp = 
-        start (getChromeOptions())
-        Console.Clear()
-        printfn $"[{stamp}] Fetching new data..."
-        printf $"\tGetting Word of the Day..."
-        let o =
-            match cfg.Motd.WordOfTheDaySource with
-            | "merriam-webster" ->
-                let _url = "https://www.merriam-webster.com/word-of-the-day/calendar"
-                url _url
-                let vv = elements ".word-and-pronunciation a h2"
-                let v = (vv.[1]).Text
-                let rr = elements "div.definition-block p"
-                let r = rr.[1].Text
-                {| Verse = v; Ref = r |}
-            | _ -> 
-                let _url = "https://www.dictionary.com/e/word-of-the-day/"
-                url _url
-                let v = (element "div.otd-item-headword__word h1").Text
-                let r = (element "div.otd-item-headword__pos p:nth-child(2)").Text
-                {| Verse = v; Ref = r |}
-        quit()
-        printfn "Done."
-        o
 
     let GetVerseOfTheDay stamp = 
         let votdFile = @"c:\dev\temp\walldash\votd.txt"
@@ -139,13 +43,13 @@ module MOTD =
                 File.ReadAllText(votdFile)
             else
                 let votd = 
-                    let v = fetchVotd2 stamp
+                    let v = fetchVotd stamp
                     $"{v.Verse}<br />{v.Ref}"
                 File.WriteAllText(votdFile, votd)
                 votd
         else
             let votd = 
-                let v = fetchVotd2 stamp
+                let v = fetchVotd stamp
                 $"{v.Verse}<br />{v.Ref}"
             File.WriteAllText(votdFile, votd)
             votd
@@ -158,13 +62,13 @@ module MOTD =
                 File.ReadAllText(wodFile)
             else
                 let votd = 
-                    let v = fetchWod2 cfg stamp
+                    let v = fetchWod cfg stamp
                     $"{v.Verse}<br />{v.Ref}"
                 File.WriteAllText(wodFile, votd)
                 votd
         else
             let votd = 
-                let v = fetchWod2 cfg stamp
+                let v = fetchWod cfg stamp
                 $"{v.Verse}<br />{v.Ref}"
             File.WriteAllText(wodFile, votd)
             votd
