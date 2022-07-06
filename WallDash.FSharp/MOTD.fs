@@ -7,6 +7,7 @@ open canopy.classic
 open OpenQA.Selenium
 open OpenQA.Selenium.Chrome
 open JFSharp
+open System.Text.RegularExpressions
 
 module MOTD = 
     open SettingsTypes
@@ -31,16 +32,83 @@ module MOTD =
         url "https://bible.com/"
         let v = element "p.votd-verse a"
         let r = element "p.votd-ref a"
-        //printfn $"{v.Text} - {r.Text}"
         let o = {| Verse = v.Text; Ref = r.Text |}
         quit()
         printfn "Done."
         o
 
+    let private fetchVotd2 stamp = 
+        printf "\tGetting new Verse of the Day..."
+        let tempFile = "c:/dev/temp/walldash/bible.txt"
+        QuickDownload "https://bible.com/" tempFile
+        //let cc = 
+        //    File.ReadAllText tempFile
+        //    |> function
+        //    | Regex "<p class='votd-verse'>(.*?)</p>" [] -> ""
+        //    | _ -> "no match"
+        let c = File.ReadAllText tempFile
+        let verseText = 
+            Regex.Match(c, "<p class='votd-verse'>(.*?)</p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+            |> (fun m -> 
+                m.Success
+                |> function
+                | true -> 
+                    Regex.Match(m.Value, "(_self\">)(.*?)(<\/a>)", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+                    |> (fun x ->
+                        x.Success 
+                        |> function
+                        | true -> x.Groups.[2].Value
+                        | false -> "no match"
+                    )
+                | false -> "no match"
+            )        
+        let verseRef = 
+            Regex.Match(c, "<p class='votd-ref'>(.*?)</p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+            |> (fun m -> 
+                m.Success
+                |> function
+                | true ->
+                    Regex.Match(m.Value, "(_self\">)(.*?)(<\/a>)", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+                    |> (fun x -> 
+                        x.Success 
+                        |> function
+                        | true -> x.Groups.[2].Value
+                        | false -> "no match"
+                    )
+                | false -> "no match"
+            )
+        File.Delete tempFile
+        printfn "Done."
+        {| Verse = verseText; Ref = verseRef |}
+
+    let private fetchWod2 (cfg: Config.Config) stamp =
+        printf $"\tGetting Word of the Day..."
+        let tempFile = "c:/dev/temp/walldash/webster.txt"
+        QuickDownload "https://www.merriam-webster.com/word-of-the-day/calendar" tempFile
+        let c = File.ReadAllText tempFile
+        let word = 
+            Regex.Match(c, "<h2 class=\"wod-l-hover\">(.*?)<\/h2>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+            |> (fun m -> 
+                m.Success
+                |> function
+                | true -> m.Groups.[1].Value
+                | false -> "no match"
+            )        
+        let def = 
+            Regex.Match(c, "\"definition-block\">.*?<p>(.*?)<\/p>", RegexOptions.IgnoreCase ||| RegexOptions.Singleline)
+            |> (fun m -> 
+                m.Success
+                |> function
+                | true -> m.Groups.[1].Value
+                | false -> "no match"
+            )
+        File.Delete tempFile
+        printfn "Done."
+        {| Verse = word; Ref = def |}
+
     let private fetchWod (cfg: Config.Config) stamp = 
         start (getChromeOptions())
         Console.Clear()
-
         printfn $"[{stamp}] Fetching new data..."
         printf $"\tGetting Word of the Day..."
         let o =
@@ -71,13 +139,13 @@ module MOTD =
                 File.ReadAllText(votdFile)
             else
                 let votd = 
-                    let v = fetchVotd stamp
+                    let v = fetchVotd2 stamp
                     $"{v.Verse}<br />{v.Ref}"
                 File.WriteAllText(votdFile, votd)
                 votd
         else
             let votd = 
-                let v = fetchVotd stamp
+                let v = fetchVotd2 stamp
                 $"{v.Verse}<br />{v.Ref}"
             File.WriteAllText(votdFile, votd)
             votd
@@ -90,13 +158,13 @@ module MOTD =
                 File.ReadAllText(wodFile)
             else
                 let votd = 
-                    let v = fetchWod cfg stamp
+                    let v = fetchWod2 cfg stamp
                     $"{v.Verse}<br />{v.Ref}"
                 File.WriteAllText(wodFile, votd)
                 votd
         else
             let votd = 
-                let v = fetchWod cfg stamp
+                let v = fetchWod2 cfg stamp
                 $"{v.Verse}<br />{v.Ref}"
             File.WriteAllText(wodFile, votd)
             votd
