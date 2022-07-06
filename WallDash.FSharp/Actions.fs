@@ -83,6 +83,7 @@ module Actions =
         //    Async.RunSynchronously timerEvent
         //    printfn "%A" DateTime.Now
         //    DoWallDashStuff()
+        0
 
     let getMonitorDimensions = Settings.MonitorSize
 
