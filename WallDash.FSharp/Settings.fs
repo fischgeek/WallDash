@@ -6,6 +6,7 @@ open System.IO
 open TrelloConnect
 open JFSharp.Pipes
 open WallDash.FSharp.SettingsTypes
+open WallDash
 
 module Settings =
     let cfg : Config.Config = LoadConfig()
@@ -81,6 +82,7 @@ module Settings =
         let cal = Calendar.GetCalendarInfo()
         let driveInfo = Drive.GetDriveInfo()
         let dropboxInfo = Dropbox.GetSpace()
+        let speedTest = SpeedTest.TestSpeed()
         let html = 
             $"
             <div class='container-fluid'>
@@ -112,6 +114,7 @@ module Settings =
                         {dropboxInfo}
                     </div>
                 </div>
+                <div id='speedtest'>{speedTest}</div>
                 <div id='timestamp'>{DateTimePipe.StampString()}</div>
             </div>
             "

@@ -10,6 +10,7 @@ open System.Reflection
 open TrelloConnect
 open JFSharp
 open Dropbox.Api.Sharing
+open WallDash
 
 module Actions =
     let cfg = SettingsTypes.LoadConfig()
@@ -69,9 +70,6 @@ module Actions =
         printfn $"[{stamp}] Done."
 
     let StartWallDash() = 
-
-        
-
         InitWallDash()
         DoWallDashStuff()
         //let timer = new Timers.Timer(300000.)

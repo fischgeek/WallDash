@@ -14,8 +14,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <WarningsAsErrors>3239;$(WarningsAsErrors)</WarningsAsErrors>
     <Name>WallDash.FSharp</Name>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +73,9 @@
     <None Include="html\ending_body.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="extras\speedtest.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SettingsTypes.fs" />
     <Compile Include="Dropbox.fs" />
@@ -80,6 +84,7 @@
     <Compile Include="Trello.fs" />
     <Compile Include="Weather.fs" />
     <Compile Include="Wallpaper.fs" />
+    <Compile Include="SpeedTest.fs" />
     <Compile Include="Calendar.fs" />
     <Compile Include="Settings.fs" />
     <Compile Include="Actions.fs" />
