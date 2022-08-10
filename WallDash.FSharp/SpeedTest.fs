@@ -11,8 +11,8 @@ module SpeedTest =
     let TestSpeed () =
         printf "\tRunning speed test..."
         let exePath = Path.Combine(Environment.CurrentDirectory, "extras", "speedtest.exe")
-        //let x = ProcessPipe.StartAndCapture exePath ""
-        let x = File.ReadAllLines("c:/dev/temp/speedtest.txt")
+        let x = ProcessPipe.StartAndCapture exePath ""
+        //let x = File.ReadAllLines("c:/dev/temp/speedtest.txt")
         let y = StringPipe.JoinLines x
         let getMatch updown =
             let matches = Regex.Match(y, $"({updown}:)\s+(\d+)", RegexOptions.IgnoreCase)
