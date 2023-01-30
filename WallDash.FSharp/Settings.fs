@@ -79,7 +79,7 @@ module Settings =
         let date = getDateInfo()
         let weather = Weather.GetWeather()
         let trelloCol1,trelloCol2,trelloCol3 = Trello.GetTrelloItems()
-        let cal = Calendar.GetCalendarInfo()
+        let cal1,cal2,cal3 = Calendar.GetCalendarInfo2()
         let driveInfo = Drive.GetDriveInfo()
         let dropboxInfo = Dropbox.GetSpace()
         let speedTest = SpeedTest.TestSpeed()
@@ -93,21 +93,24 @@ module Settings =
                 </div>
                 <div class='row center-box' style='margin-bottom: 10px'>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'>WCRI</div>
-                        <div class='card-container'>{trelloCol1}</div>
+                    {cal1}
+                        <!-- <div class='big-box-section-header'>WCRI</div>
+                        <div class='card-container'>{cal1}</div> -->
                     </div>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'>Kero</div>
-                        <div class='card-container'>{trelloCol2}</div>
+                    {cal2}
+                        <!-- <div class='big-box-section-header'>Kero</div>
+                        <div class='card-container'>{cal2}</div> -->
                     </div>
                     <div class='col-sm'>
-                        <div class='big-box-section-header'>DevTech</div>
-                        <div class='card-container'>{trelloCol3}</div>
+                    {cal3}
+                        <!-- <div class='big-box-section-header'>DevTech</div>
+                        <div class='card-container'>{cal3}</div> -->
                     </div>
                 </div>
                 <div class='row'>
                     <div class='col-sm'>
-                        {cal}
+                        
                     </div>
                     <div id='drive-info' class='col-md-auto'>
                         {driveInfo}

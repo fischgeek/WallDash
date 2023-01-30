@@ -184,3 +184,32 @@ module Calendar =
             else File.ReadAllText(cfg.CacheFiles.Calendar)
         printfn "Done."
         calendarDiv
+
+    let GetCalendarInfo2 () : (string * string * string) =
+        let addDay (x: int) (dt: DateTime) = float x |> dt.AddDays 
+        printf "\tGetting Calendar events..."
+        let events = GetCalendarEvents() |> Seq.toList
+        let dt = DateTime.Now
+        let cleaned = events |> cleanAndFlatten
+        let todaysEvents = cleaned |> collectEvents dt |> formatEventListForDisplay
+        let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay
+        let nextEvents = cleaned |> collectEvents (dt |> addDay 2) |> formatEventListForDisplay
+        let nextDay = dt.AddDays(2.).ToString("dddd")
+        let dmFormat = "M/d"
+        let todayDM = dt.ToString(dmFormat, CultureInfo.InvariantCulture)
+        let tomorrowDM = dt.AddDays(1.).ToString(dmFormat, CultureInfo.InvariantCulture)
+        let nextDayDM = dt.AddDays(2.).ToString(dmFormat, CultureInfo.InvariantCulture)
+        let todayHtml = 
+            $"<div class='calendar'>
+                <h1>Today <span class='dm'>{todayDM}</span></h1><ul class='calendar-list'>{todaysEvents}</ul>
+            </div>"
+        let tomorrowHtml = 
+            $"<div class='calendar'>
+                <h1>Tomorrow <span class='dm'>{tomorrowDM}</span></h1><ul class='calendar-list'>{tomorrowsEvents}</ul>
+            </div>"
+        let nextDayHtml = 
+            $"<div class='calendar'>
+                <h1>{nextDay} <span class='dm'>{nextDayDM}</span></h1><ul class='calendar-list'>{nextEvents}</ul>
+            </div>"
+        printfn "Done."
+        todayHtml,tomorrowHtml,nextDayHtml
