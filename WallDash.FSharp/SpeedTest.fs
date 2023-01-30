@@ -13,14 +13,13 @@ module SpeedTest =
     let cfg = LoadConfig()
 
     let private shouldGetSpeed() = 
-        //let now = DateTime.Now
-        //let speedTestFile = cfg.CacheFiles.SpeedTest |> FileInfo
-        //let diff = now - speedTestFile.LastWriteTime
-        //if diff.TotalMinutes >= 30. then 
-        //    File.Delete speedTestFile.FullName
-        //    true 
-        //else false
-        true
+        let now = DateTime.Now
+        let speedTestFile = cfg.CacheFiles.SpeedTest |> FileInfo
+        let diff = now - speedTestFile.LastWriteTime
+        if diff.TotalMinutes >= 30. then 
+            File.Delete speedTestFile.FullName
+            true 
+        else false
 
     let TestSpeed () =
         printf "\tRunning speed test..."
