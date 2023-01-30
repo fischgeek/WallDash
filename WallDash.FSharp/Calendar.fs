@@ -8,6 +8,7 @@ open Google.Apis.Calendar.v3.Data
 open WallDash.FSharp.SettingsTypes
 open  JFSharp.Pipes
 open System.IO
+open System.Globalization
 
 module Calendar = 
     let cfg = LoadConfig()
@@ -84,7 +85,7 @@ module Calendar =
         if isNull eventDateTime.Date then
             eventDateTime.DateTime.HasValue
             |> function
-            | true -> eventDateTime.DateTime.Value.ToString("h:mm")
+            | true -> eventDateTime.DateTime.Value.ToString("h:mmtt").ToLower()
             | false -> failwith "Could not parse date"
         else 
             "All Day"
@@ -143,9 +144,9 @@ module Calendar =
             events
             |?! DashboardEvent.IsAllDay
             |? (fun ev -> ev.StartDate.Date = d)
-            |> Seq.sortBy (fun ev -> ev.StartDate.Date)
+            |> Seq.sortBy (fun ev -> ev.StartDate.TimeOfDay)
 
-        allDayEvents |> Seq.append eventsToday |> Seq.toList
+        eventsToday |> Seq.append allDayEvents |> Seq.toList
 
     let private shouldGetCalInfo() = 
         let now = DateTime.Now
@@ -168,11 +169,15 @@ module Calendar =
                 let tomorrowsEvents = cleaned |> collectEvents (dt.AddDays(1.)) |> formatEventListForDisplay
                 let nextEvents = cleaned |> collectEvents (dt |> addDay 2) |> formatEventListForDisplay
                 let nextDay = dt.AddDays(2.).ToString("dddd")
+                let dmFormat = "M/d"
+                let todayDM = dt.ToString(dmFormat, CultureInfo.InvariantCulture)
+                let tomorrowDM = dt.AddDays(1.).ToString(dmFormat, CultureInfo.InvariantCulture)
+                let nextDayDM = dt.AddDays(2.).ToString(dmFormat, CultureInfo.InvariantCulture)
                 let calHtml = 
                     $"<div class='calendar'>
-                        <h1>Today</h1><ul class='calendar-list'>{todaysEvents}</ul>
-                        <h1>Tomorrow</h1><ul class='calendar-list'>{tomorrowsEvents}</ul>
-                        <h1>{nextDay}</h1><ul class='calendar-list'>{nextEvents}</ul>
+                        <h1>Today <span class='dm'>{todayDM}</span></h1><ul class='calendar-list'>{todaysEvents}</ul>
+                        <h1>Tomorrow <span class='dm'>{tomorrowDM}</span></h1><ul class='calendar-list'>{tomorrowsEvents}</ul>
+                        <h1>{nextDay} <span class='dm'>{nextDayDM}</span></h1><ul class='calendar-list'>{nextEvents}</ul>
                     </div>"
                 File.WriteAllText(cfg.CacheFiles.Calendar, calHtml)
                 calHtml

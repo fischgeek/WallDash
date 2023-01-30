@@ -17,6 +17,7 @@ module Actions =
     let private path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
     let private providedHeadHtml = @$"{path}\html\head.html"
     let private providedEndingBody = @$"{path}\html\ending_body.html"
+    let private overrideCssFile = @$"{path}\overrides.css"
 
     let InitWallDash() =
         DirectoryPipe.Create cfg.WorkingDirectory
@@ -55,6 +56,11 @@ module Actions =
         let stamp = DateTime.Now.ToLongTimeString()
         printfn $"[{stamp}] Fetching new data..."
         let headHtml = File.ReadAllText providedHeadHtml
+        let overrideCss = 
+            FilePipe.ReadIfExists overrideCssFile
+            |> function
+            | Some x -> $"<style>{x}</style>"
+            | None -> ""
         let endingBody = File.ReadAllText providedEndingBody
         let bodyHtml = Settings.GetBodyHtml cfg stamp
 

@@ -14,7 +14,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <WarningsAsErrors>3239;$(WarningsAsErrors)</WarningsAsErrors>
     <Name>WallDash.FSharp</Name>
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
@@ -127,11 +128,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DropboxConnect\DropboxConnect\DropboxConnect.fsproj">
-      <Name>DropboxConnect</Name>
-      <Project>{58c63cd0-b961-4d13-8b4f-36bfd53bb6b1}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\FSharpGoogleCalendar\FSharpGoogleCalendar\FSharpGoogleCalendar.fsproj">
       <Name>FSharpGoogleCalendar</Name>
       <Project>{a319a464-f212-4592-ab1e-de2f2111a5ba}</Project>
@@ -142,9 +138,14 @@
       <Project>{7b8ef634-3eb8-4bc1-bb10-c61c9ffbe162}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\TrelloConnect\TrelloConnect\TrelloConnect.fsproj">
+    <ProjectReference Include="..\..\DropboxConnect\DropboxConnect\DropboxConnect.fsproj">
+      <Name>DropboxConnect</Name>
+      <Project>{ef860c12-e8af-41c5-bae7-7456663cb6cf}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TrelloConnect\TrelloConnect\TrelloConnect.fsproj">
       <Name>TrelloConnect</Name>
-      <Project>{c3dd0fc0-e512-4f49-b341-59d9dd44843f}</Project>
+      <Project>{1d942f6f-c33b-45fd-8ce9-5e6c029aec7f}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
@@ -167,7 +168,7 @@
     </When>
   </Choose>-->
   <Choose>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2') Or ($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@FSharp.Core) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2') Or ($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="FSharp.Core">
           <HintPath>..\..\..\packages\FSharp.Core\lib\netstandard2.0\FSharp.Core.dll</HintPath>
@@ -178,7 +179,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2') Or ($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@FSharp.Data) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2') Or ($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="FSharp.Data">
           <HintPath>..\..\..\packages\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
@@ -189,7 +190,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="Google.Apis">
           <HintPath>..\..\..\packages\Google.Apis\lib\net45\Google.Apis.dll</HintPath>
@@ -203,7 +204,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="Google.Apis">
           <HintPath>..\..\..\packages\Google.Apis\lib\netstandard2.0\Google.Apis.dll</HintPath>
@@ -214,7 +215,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Auth) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="Google.Apis.Auth">
           <HintPath>..\..\..\packages\Google.Apis.Auth\lib\net461\Google.Apis.Auth.dll</HintPath>
@@ -228,7 +229,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Auth) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="Google.Apis.Auth">
           <HintPath>..\..\..\packages\Google.Apis.Auth\lib\netstandard2.0\Google.Apis.Auth.dll</HintPath>
@@ -244,7 +245,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Calendar.v3) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="Google.Apis.Calendar.v3">
           <HintPath>..\..\..\packages\Google.Apis.Calendar.v3\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
@@ -253,7 +254,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Calendar.v3) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="Google.Apis.Calendar.v3">
           <HintPath>..\..\..\packages\Google.Apis.Calendar.v3\lib\netstandard2.0\Google.Apis.Calendar.v3.dll</HintPath>
@@ -264,7 +265,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Core) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="Google.Apis.Core">
           <HintPath>..\..\..\packages\Google.Apis.Core\lib\net45\Google.Apis.Core.dll</HintPath>
@@ -273,7 +274,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Google.Apis.Core) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="Google.Apis.Core">
           <HintPath>..\..\..\packages\Google.Apis.Core\lib\netstandard2.0\Google.Apis.Core.dll</HintPath>
@@ -284,7 +285,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@HtmlAgilityPack) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="HtmlAgilityPack">
           <HintPath>..\..\..\packages\HtmlAgilityPack\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -293,7 +294,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@HtmlAgilityPack) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="HtmlAgilityPack">
           <HintPath>..\..\..\packages\HtmlAgilityPack\lib\netstandard2.0\HtmlAgilityPack.dll</HintPath>
@@ -304,7 +305,7 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Newtonsoft.Json) != 1">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.2')">
       <ItemGroup>
         <Reference Include="Newtonsoft.Json">
           <HintPath>..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -313,7 +314,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="(($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))) And $(registry:HKEY_CURRENT_USER\Software\WCRI\WallDash.FSharp@Newtonsoft.Json) != 1">
+    <When Condition="($(TargetFrameworkIdentifier) == '.NETCoreApp' And $(TargetFrameworkVersion) == 'v5.0') Or ($(TargetFrameworkIdentifier) == '.NETStandard' And ($(TargetFrameworkVersion) == 'v2.0' Or $(TargetFrameworkVersion) == 'v2.1'))">
       <ItemGroup>
         <Reference Include="Newtonsoft.Json">
           <HintPath>..\..\..\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>

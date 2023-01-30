@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Local|AnyCPU'">
-    <OutputPath></OutputPath>
+    <OutputPath>
+    </OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath></OutputPath>
+    <OutputPath>
+    </OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="paket.references" />
@@ -22,6 +25,7 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="95.0.4638.5401" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TrelloConnect\TrelloConnect\TrelloConnect.fsproj" />
     <ProjectReference Include="..\WallDash.FSharp\WallDash.FSharp.fsproj" />
   </ItemGroup>
   <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
